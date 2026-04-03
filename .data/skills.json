@@ -1,0 +1,144 @@
+[
+  {
+    "title": "Otimização de Funil Completo com Remarketing",
+    "category": "Estrutura de Campanhas",
+    "content": "Implementar estratégia de funil completo (TOPO-MEIO-FUNDO) com foco em remarketing. Configure audiências de 30D, 60D e 90D para diferentes janelas de conversão. Use remarketing de compra e WhatsApp para nutrir leads em diferentes estágios. Estruture campanhas separadas para cada etapa do funil com objetivos específicos (tráfego, engajamento, vendas).",
+    "created": "2026-03-12T00:15:02.718Z",
+    "auto": true
+  },
+  {
+    "title": "Maximização de Ticket Médio Alto",
+    "category": "Otimização de Receita",
+    "content": "**Título:** Maximização de Ticket Médio Alto\n\n**Conteúdo:** Para produtos com ticket médio de R$ 4.504, implemente estratégias premium focadas em ROI e qualificação rigorosa. Concentre investimentos nas regiões de maior poder aquisitivo (SP, RJ, DF, SC, PR) com segmentação por renda e comportamento de compra. Com CPL de R$ 0,20, priorize volume de leads qualificados e invista pesadamente em nutrição via WhatsApp, já que a conversão direta é de 0%. Configure funis de aquecimento de 7-14 dias com conteúdo educativo e social proof. Use bidding Target ROAS acima de 400% e implemente campanhas de remarketing agressivas para leads que não converteram. Configure exclusões geográficas fora das 5 regiões principais para maximizar eficiência do orçamento.",
+    "created": "2026-03-12T00:15:02.718Z",
+    "auto": true,
+    "updated": "2026-03-27T02:31:53.008Z"
+  },
+  {
+    "title": "Geo-targeting Estratégico por Performance",
+    "category": "Segmentação Geográfica",
+    "content": "Concentre 70% do budget nos top 5 estados (SP, RJ, MG, BA, MS) que já demonstram conversão. Crie campanhas específicas para cada região com ajustes de lance baseados na performance histórica. Use dados demográficos regionais para personalizar criativos e ofertas por localização.",
+    "created": "2026-03-12T00:15:02.718Z",
+    "auto": true
+  },
+  {
+    "title": "Balanceamento Multi-Plataforma Meta + Google",
+    "category": "Gestão de Budget",
+    "content": "Com 14 campanhas no Meta e 13 no Google, implemente budget allocation baseado em performance por plataforma. Use Meta para awareness e remarketing (forte em audiências comportamentais) e Google para captura de demanda (busca ativa). Monitore CPA e ROAS comparativo entre plataformas semanalmente para rebalanceamento.",
+    "created": "2026-03-12T00:15:02.718Z",
+    "auto": true
+  },
+  {
+    "title": "Automação de Remarketing Multi-Canal",
+    "category": "Automação e Escala",
+    "content": "Automatize a jornada de remarketing integrando Meta e Google com diferentes touchpoints (site, catálogo, WhatsApp). Configure Dynamic Product Ads no Meta e Shopping campaigns no Google para produtos visualizados. Implemente sequenciamento de anúncios: 1º contato (awareness), 2º contato (consideração), 3º contato (conversão).",
+    "created": "2026-03-12T00:15:02.718Z",
+    "auto": true
+  },
+  {
+    "title": "Otimização de Campanhas de Remarketing Multi-Janela",
+    "category": "Meta Ads",
+    "content": "Implemente uma estratégia de remarketing escalonada usando janelas de 30D, 60D e 90D para maximizar conversões. Configure audiências separadas por tempo de interação: 30D para usuários quentes (ofertas urgentes), 60D para reengajamento (conteúdo educativo + oferta) e 90D para reconquista (desconto especial). Use creative fatigue prevention alternando criativos a cada 3-5 dias e ajuste lances baseado na janela temporal.",
+    "created": "2026-03-12T03:49:58.006Z",
+    "auto": true
+  },
+  {
+    "title": "Estratégia de Funil Completo para Alto Ticket",
+    "category": "Estratégia de Campanha",
+    "content": "**Título:** Estratégia de Funil Completo para Alto Ticket\n\n**Conteúdo:** Para produtos de ticket médio R$ 4.504, estruture campanhas TOPO (awareness com lookalike + interesses focados em SP, RJ, DF, SC, PR), MEIO (consideração com remarketing 45D + integração Google Ads CPL R$ 0,20) e FUNDO (conversão com remarketing 15D + estratégia de nutrição WhatsApp intensiva). Aloque 25% do budget no topo, 30% no meio e 45% no fundo. Use creative progressivo: dor específica no topo, transformação no meio, escassez + prova social no fundo. Implemente funil de nutrição WhatsApp com follow-up automático para converter leads qualificados do Google.",
+    "created": "2026-03-12T03:49:58.006Z",
+    "auto": true,
+    "updated": "2026-03-27T02:31:50.669Z"
+  },
+  {
+    "title": "Expansão Geográfica Baseada em Performance",
+    "category": "Segmentação Geográfica",
+    "content": "Concentre 60% do budget em SP, RJ e MG (estados top performers). Para BA e MS, crie campanhas específicas com criativos regionalizados e ajuste de lance -20%. Teste expansão gradual para PR, RS e GO usando campanhas de tráfego primeiro, depois escale para conversão baseado em CPA. Monitore CPM por estado e ajuste budgets semanalmente.",
+    "created": "2026-03-12T03:49:58.006Z",
+    "auto": true
+  },
+  {
+    "title": "Integração WhatsApp para Conversão de Alto Valor",
+    "category": "Otimização de Conversão",
+    "content": "Configure campanhas específicas direcionando para WhatsApp em produtos acima de R$ 3.000. Use botão CTA 'Falar no WhatsApp' em vez de 'Comprar Agora'. Crie sequência de follow-up automatizada: mensagem imediata com desconto 5%, follow-up em 2h com social proof, follow-up em 24h com urgência. Meça conversão WhatsApp→Venda e otimize por esse evento customizado.",
+    "created": "2026-03-12T03:49:58.006Z",
+    "auto": true
+  },
+  {
+    "title": "Otimização Cross-Platform Meta e Google",
+    "category": "Gestão Multi-Plataforma",
+    "content": "Use Google Ads para capturar intenção de compra (Search + Shopping) e Meta para awareness e remarketing. Importe audiências de conversores do Google para Meta como lookalike. Configure exclusões mútuas: quem converteu no Google sai do Meta por 90 dias. Distribua budget 40% Meta, 60% Google para maximizar ROI com base no ticket médio atual.",
+    "created": "2026-03-12T03:49:58.006Z",
+    "auto": true
+  },
+  {
+    "title": "Otimização de Funil Multi-Temperatura",
+    "category": "Estratégia de Campanhas",
+    "content": "Com 7 campanhas Meta Ads segmentadas por temperatura (prospecção, remarketing quente, engajamento), implemente uma estratégia de budget allocation dinâmica: aloque 40% para prospecção lookalike, 35% para remarketing de conversão e 25% para nurturing. Configure exclusões de público entre campanhas para evitar sobreposição e ajuste frequências por temperatura (1-2x para frios, 3-5x para quentes).",
+    "created": "2026-03-27T05:30:01.861Z",
+    "auto": true
+  },
+  {
+    "title": "Maximização de Ticket Alto Premium",
+    "category": "Otimização de Receita",
+    "content": "Com ticket médio de R$ 4.504, foque em públicos de alta capacidade de compra. Crie campanhas específicas para produtos premium usando segmentação por renda e interesses afluentes. No Google Ads, utilize lances automatizados ROAS alvo de 400-500% e no Meta Ads, ative otimização para valor de conversão. Teste criativos que enfatizem qualidade, exclusividade e status.",
+    "created": "2026-03-27T05:30:01.861Z",
+    "auto": true
+  },
+  {
+    "title": "Expansão Geográfica Estratégica",
+    "category": "Segmentação Geográfica",
+    "content": "Com concentração em SP, RJ, DF, SC, PR, expanda para MG, ES, GO, BA usando a estratégia dos estados top performers como benchmark. Crie campanhas separadas para cada novo estado com 20% do budget inicial dos estados principais. Ajuste criativos com referências locais e monitore CPM e CTR - se performance for 80%+ dos estados originais, aumente investimento gradualmente.",
+    "created": "2026-03-27T05:30:01.861Z",
+    "auto": true
+  },
+  {
+    "title": "Sinergia Meta Ads + Google Ads",
+    "category": "Integração Multi-Plataforma",
+    "content": "Com apenas 2 campanhas Google vs 7 Meta, rebalanceie a estratégia. Use Google Ads para capturar demanda ativa (pesquisa de marca e genérica) e Meta Ads para geração de demanda. Configure remarketing cruzado: visitantes do Google remarketing no Meta e vice-versa. Implemente Customer Match para sincronizar audiências de compradores entre plataformas e maximize a jornada omnichannel.",
+    "created": "2026-03-27T05:30:01.861Z",
+    "auto": true
+  },
+  {
+    "title": "Automação de Remarketing Inteligente",
+    "category": "Automação e Performance",
+    "content": "Com múltiplas campanhas de remarketing (15D, 30D, 60D), implemente automação baseada em comportamento: visitantes de produto específico recebem catálogo inteligente, abandonadores de carrinho vão para conversão quente em 24h, compradores para cross-sell em 7 dias. Configure regras automáticas para pausar/ativar campanhas baseado em frequency cap (pause se >3.5) e performance (aumente budget se ROAS >300%).",
+    "created": "2026-03-27T05:30:01.861Z",
+    "auto": true
+  },
+  {
+    "title": "Otimização de Funil de Remarketing Multi-Etapas",
+    "category": "Estratégia de Campanhas",
+    "content": "Baseado na estrutura de campanhas com diferentes janelas temporais (15D, 30D, 60D), implemente uma estratégia de segmentação progressiva: configure audiences de 15 dias para conversões diretas com ofertas agressivas, 30 dias para nutrição via WhatsApp e engajamento, e 60 dias para reconquista com catálogo dinâmico. Use exclusões mútuas entre campanhas para evitar sobreposição e configure bid adjustments decrescentes conforme aumenta o tempo desde a última interação.",
+    "created": "2026-03-31T15:50:47.429Z",
+    "auto": true
+  },
+  {
+    "title": "Integração Estratégica Meta Ads e Google Ads",
+    "category": "Cross-Platform Marketing",
+    "content": "Com 7 campanhas no Meta e apenas 2 no Google, expanda a presença no Google Ads criando campanhas complementares: use Google Shopping para produtos em catálogo (espelhando o sucesso do Catálogo Inteligente do Meta), implemente campanhas de Search para capturar demanda ativa, e configure Display Remarketing para usuários que visitaram via anúncios do Meta. Sincronize as audiences entre plataformas usando Customer Match e Pixel data.",
+    "created": "2026-03-31T15:50:47.429Z",
+    "auto": true
+  },
+  {
+    "title": "Estruturação de Nomenclatura Padronizada",
+    "category": "Organização de Campanhas",
+    "content": "Padronize a nomenclatura seguindo o modelo das campanhas 'FUNDO': [MARCA/PRODUTO] [OBJETIVO] [GEO] [TIPO_AUDIENCE] [CTA] [JANELA_TEMPORAL]. Exemplo: [TOTH] [VENDAS] [BR] [LOOKALIKE] [COMPRAR] [30D]. Isso facilita relatórios automatizados, análise de performance por categoria e otimizações em lote. Configure UTMs correspondentes para tracking unificado.",
+    "created": "2026-03-31T15:50:47.429Z",
+    "auto": true
+  },
+  {
+    "title": "Estratégia de Lookalike Escalonada",
+    "category": "Segmentação de Audiência",
+    "content": "Expanda a campanha 'Lookalike Compradores' criando múltiplas variações: Lookalike 1% (alta qualidade), 3% (volume moderado) e 5% (escala máxima). Configure budgets proporcionais: 50% para 1%, 30% para 3%, 20% para 5%. Use Advantage+ Shopping ou Catálogo Dinâmico para personalização automática de produtos. Monitore CPM e frequência para identificar saturação de audiência.",
+    "created": "2026-03-31T15:50:47.429Z",
+    "auto": true
+  },
+  {
+    "title": "Automação de Fluxo WhatsApp Business",
+    "category": "Conversão e CRM",
+    "content": "Otimize a campanha '[WHATSAPP]' configurando Quick Replies automáticos baseados em produtos visualizados, chatbots para qualificação inicial de leads, e integração com CRM para nurturing personalizado. Configure eventos personalizados no Pixel para rastrear conversas iniciadas, qualificação de leads e vendas fechadas via WhatsApp. Use esses dados para otimizar bidding e criar audiences customizadas de alta conversão.",
+    "created": "2026-03-31T15:50:47.429Z",
+    "auto": true
+  }
+]

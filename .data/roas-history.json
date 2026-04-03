@@ -1,0 +1,163 @@
+{
+  "generatedAt": "2026-04-02T15:43:51.938Z",
+  "months": [
+    {
+      "month": "2025-01",
+      "orders": 63,
+      "revenue": 260081.49700000003,
+      "metaSpend": 4904.63,
+      "googleSpend": 26973,
+      "totalAds": 31877.63,
+      "roas": 8.158746337164965,
+      "costPerOrder": 505.994126984127
+    },
+    {
+      "month": "2025-02",
+      "orders": 41,
+      "revenue": 161094.57000000004,
+      "metaSpend": 4363.21,
+      "googleSpend": 13337.86,
+      "totalAds": 17701.07,
+      "roas": 9.10083797194181,
+      "costPerOrder": 431.73341463414636
+    },
+    {
+      "month": "2025-03",
+      "orders": 29,
+      "revenue": 130053.9,
+      "metaSpend": 4093.27,
+      "googleSpend": 6783.83,
+      "totalAds": 10877.1,
+      "roas": 11.956670436053727,
+      "costPerOrder": 375.07241379310346
+    },
+    {
+      "month": "2025-04",
+      "orders": 50,
+      "revenue": 278224.1500000001,
+      "metaSpend": 3279.37,
+      "googleSpend": 2691.41,
+      "totalAds": 5970.78,
+      "roas": 46.59762208622661,
+      "costPerOrder": 119.4156
+    },
+    {
+      "month": "2025-05",
+      "orders": 22,
+      "revenue": 124471.17000000001,
+      "metaSpend": 3381.92,
+      "googleSpend": 2005.73,
+      "totalAds": 5387.65,
+      "roas": 23.10305420730746,
+      "costPerOrder": 244.8931818181818
+    },
+    {
+      "month": "2025-06",
+      "orders": 19,
+      "revenue": 114329.23,
+      "metaSpend": 4539.3,
+      "googleSpend": 6081.99,
+      "totalAds": 10621.29,
+      "roas": 10.764156707895179,
+      "costPerOrder": 559.0152631578948
+    },
+    {
+      "month": "2025-07",
+      "orders": 33,
+      "revenue": 191771.01,
+      "metaSpend": 6683.87,
+      "googleSpend": 5485.35,
+      "totalAds": 12169.220000000001,
+      "roas": 15.75869365497542,
+      "costPerOrder": 368.76424242424247
+    },
+    {
+      "month": "2025-08",
+      "orders": 36,
+      "revenue": 209565.6,
+      "metaSpend": 9103.05,
+      "googleSpend": 12642.15,
+      "totalAds": 21745.199999999997,
+      "roas": 9.637326858341153,
+      "costPerOrder": 604.0333333333333
+    },
+    {
+      "month": "2025-09",
+      "orders": 55,
+      "revenue": 175867.34,
+      "metaSpend": 8532.65,
+      "googleSpend": 5754.91,
+      "totalAds": 14287.56,
+      "roas": 12.309123461248808,
+      "costPerOrder": 259.77381818181817
+    },
+    {
+      "month": "2025-10",
+      "orders": 39,
+      "revenue": 172125.13,
+      "metaSpend": 9764.18,
+      "googleSpend": 8239.9,
+      "totalAds": 18004.08,
+      "roas": 9.56034021177422,
+      "costPerOrder": 461.643076923077
+    },
+    {
+      "month": "2025-11",
+      "orders": 42,
+      "revenue": 162476.50999999998,
+      "metaSpend": 8385.78,
+      "googleSpend": 8210.86,
+      "totalAds": 16596.64,
+      "roas": 9.789723100579394,
+      "costPerOrder": 395.1580952380952
+    },
+    {
+      "month": "2025-12",
+      "orders": 12,
+      "revenue": 41826.32,
+      "metaSpend": 7609.28,
+      "googleSpend": 11574.91,
+      "totalAds": 19184.19,
+      "roas": 2.1802494658361913,
+      "costPerOrder": 1598.6825
+    },
+    {
+      "month": "2026-01",
+      "orders": 18,
+      "revenue": 60104.829999999994,
+      "metaSpend": 5427.33,
+      "googleSpend": 5572.54,
+      "totalAds": 10999.869999999999,
+      "roas": 5.464140030745818,
+      "costPerOrder": 611.1038888888888
+    },
+    {
+      "month": "2026-02",
+      "orders": 18,
+      "revenue": 66453.61000000002,
+      "metaSpend": 4509.06,
+      "googleSpend": 6961.27,
+      "totalAds": 11470.330000000002,
+      "roas": 5.79352206954813,
+      "costPerOrder": 637.2405555555556
+    },
+    {
+      "month": "2026-03",
+      "orders": 24,
+      "revenue": 142610.31000000003,
+      "metaSpend": 4508.79,
+      "googleSpend": 4749.59,
+      "totalAds": 9258.380000000001,
+      "roas": 15.403376184602491,
+      "costPerOrder": 385.7658333333334
+    }
+  ],
+  "totals": {
+    "revenue": 2291055.1770000006,
+    "metaSpend": 89085.68999999999,
+    "googleSpend": 127065.3,
+    "totalAds": 216150.99,
+    "roas": 10.599327706063251,
+    "avgCostPerOrder": 431.43910179640716
+  }
+}

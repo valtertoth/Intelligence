@@ -1,0 +1,287 @@
+{
+  "geradoEm": "2026-04-02T15:44:40.903Z",
+  "topCampanhasPorMsgWhatsApp": [
+    {
+      "nome": "ENGAJAMENTO BR REMARKETING 30D SITE CATALOGO",
+      "gasto": 8939.87,
+      "msgs": 1715,
+      "custoMsg": 5.21,
+      "objetivo": "ENGAGEMENT",
+      "freq": 2.9,
+      "nota": "CAMPEA HISTORICA - melhor custo/msg de todas"
+    },
+    {
+      "nome": "ENGAJAMENTO PP INTERESSES WHATSAPP VIDEO",
+      "gasto": 2674.21,
+      "msgs": 280,
+      "custoMsg": 9.55,
+      "objetivo": "ENGAGEMENT",
+      "freq": 5.9,
+      "nota": "Boa performance PP com video"
+    },
+    {
+      "nome": "VENDAS BR REMARKETING WHATSAPP 90D",
+      "gasto": 3177.19,
+      "msgs": 273,
+      "custoMsg": 11.64,
+      "objetivo": "SALES",
+      "freq": 2.9,
+      "nota": "Melhor SALES por msg"
+    },
+    {
+      "nome": "ENGAJAMENTO BR SEMELHANTE+INTERESSES VIP",
+      "gasto": 5147.79,
+      "msgs": 377,
+      "custoMsg": 13.65,
+      "objetivo": "ENGAGEMENT",
+      "freq": 2.4,
+      "nota": "Prospeccao com Lookalike"
+    },
+    {
+      "nome": "ENGAJAMENTO PP REMARKETING 90D SITE",
+      "gasto": 5438.86,
+      "msgs": 329,
+      "custoMsg": 16.53,
+      "objetivo": "ENGAGEMENT",
+      "freq": 3,
+      "nota": "PP remarketing"
+    },
+    {
+      "nome": "VENDAS BR REMARKETING 60D SITE",
+      "gasto": 4967.75,
+      "msgs": 294,
+      "custoMsg": 16.9,
+      "objetivo": "SALES",
+      "freq": 2.4,
+      "nota": "Remarketing medio"
+    }
+  ],
+  "pioresCampanhas": [
+    {
+      "nome": "TRAFEGO SITE SP REMARKETING",
+      "gasto": 17911.43,
+      "msgs": 13,
+      "custoMsg": 1377.8,
+      "nota": "PIOR - R7k gasto, 13 msgs"
+    },
+    {
+      "nome": "TRAFEGO WHATSAPP PP+40KM",
+      "gasto": 12912.88,
+      "msgs": 0,
+      "custoMsg": null,
+      "nota": "R2k sem nenhuma msg"
+    },
+    {
+      "nome": "TRAFEGO BR REMARKETING 30D CATALOGO",
+      "gasto": 17708.11,
+      "msgs": 71,
+      "custoMsg": 249.41,
+      "nota": "Alto gasto, poucas msgs"
+    }
+  ],
+  "padroesFuncionam": [
+    "Objetivo ENGAGEMENT com remarketing 30D gera mais msgs/R$ que qualquer outro",
+    "Frequencia ideal: 2.4-3.0 (acima de 5 degrada performance)",
+    "Catalogo dinamico com remarketing funciona melhor que imagens estaticas",
+    "Audiencias de WhatsApp + Site combinadas dao melhor resultado",
+    "Campanhas de TRAFEGO geram volume mas custo/msg altissimo",
+    "Campanhas de AWARENESS nao geram msgs - desperdiço puro",
+    "PP (Presidente Prudente) como geo especifico funciona bem para video"
+  ],
+  "padroesNaoFuncionam": [
+    "Objetivo TRAFFIC/LINK_CLICKS - gera cliques baratos mas msgs caras",
+    "Frequencia > 5 - publico saturado, performance degrada",
+    "Geo muito restrito (SP only, SC only) - limita algoritmo",
+    "AWARENESS/RECONHECIMENTO - zero conversao, zero msgs",
+    "Budget alto em campanha unica sem remarketing - dilui resultado"
+  ],
+  "googleAds": {
+    "nota": "Apenas 2 campanhas Performance Max (PMax) na conta. Sem historico de Search, Display ou Shopping manual.",
+    "campanhas": [
+      {
+        "nome": "PMax | Todos | BR",
+        "id": "21098972570",
+        "status": "ENABLED",
+        "tipo": "PERFORMANCE_MAX",
+        "gastoTotal": 27817,
+        "clicks": 110660,
+        "impressoes": 4954214,
+        "searchShare": "16.2%",
+        "evolucaoMensal": [
+          {
+            "mes": "2025-01",
+            "gasto": 6049,
+            "clicks": 12397
+          },
+          {
+            "mes": "2025-02",
+            "gasto": 2876,
+            "clicks": 2456
+          },
+          {
+            "mes": "2025-03",
+            "gasto": 1162,
+            "clicks": 3016
+          },
+          {
+            "mes": "2025-04",
+            "gasto": 571,
+            "clicks": 1758
+          },
+          {
+            "mes": "2025-05",
+            "gasto": 335,
+            "clicks": 636
+          },
+          {
+            "mes": "2025-06",
+            "gasto": 1934,
+            "clicks": 2943
+          },
+          {
+            "mes": "2025-07",
+            "gasto": 1264,
+            "clicks": 2755
+          },
+          {
+            "mes": "2025-08",
+            "gasto": 2994,
+            "clicks": 3436
+          },
+          {
+            "mes": "2025-09",
+            "gasto": 248,
+            "clicks": 1062
+          },
+          {
+            "mes": "2025-10",
+            "gasto": 255,
+            "clicks": 1066
+          },
+          {
+            "mes": "2025-11",
+            "gasto": 2046,
+            "clicks": 3518
+          },
+          {
+            "mes": "2025-12",
+            "gasto": 2745,
+            "clicks": 17990
+          },
+          {
+            "mes": "2026-01",
+            "gasto": 1666,
+            "clicks": 11559
+          },
+          {
+            "mes": "2026-02",
+            "gasto": 1606,
+            "clicks": 24293
+          },
+          {
+            "mes": "2026-03",
+            "gasto": 2067,
+            "clicks": 21775
+          }
+        ]
+      },
+      {
+        "nome": "PMax | Toth | BR",
+        "id": "22108512933",
+        "status": "ENABLED",
+        "tipo": "PERFORMANCE_MAX",
+        "gastoTotal": 29269,
+        "clicks": 104149,
+        "impressoes": 4238879,
+        "searchShare": "16.7%",
+        "evolucaoMensal": [
+          {
+            "mes": "2025-01",
+            "gasto": 6844,
+            "clicks": 8647
+          },
+          {
+            "mes": "2025-02",
+            "gasto": 4024,
+            "clicks": 8881
+          },
+          {
+            "mes": "2025-03",
+            "gasto": 1588,
+            "clicks": 3033
+          },
+          {
+            "mes": "2025-04",
+            "gasto": 144,
+            "clicks": 448
+          },
+          {
+            "mes": "2025-05",
+            "gasto": 88,
+            "clicks": 265
+          },
+          {
+            "mes": "2025-06",
+            "gasto": 1417,
+            "clicks": 2090
+          },
+          {
+            "mes": "2025-07",
+            "gasto": 655,
+            "clicks": 1581
+          },
+          {
+            "mes": "2025-08",
+            "gasto": 2007,
+            "clicks": 2645
+          },
+          {
+            "mes": "2025-09",
+            "gasto": 524,
+            "clicks": 1409
+          },
+          {
+            "mes": "2025-10",
+            "gasto": 528,
+            "clicks": 1778
+          },
+          {
+            "mes": "2025-11",
+            "gasto": 1557,
+            "clicks": 2446
+          },
+          {
+            "mes": "2025-12",
+            "gasto": 3543,
+            "clicks": 23126
+          },
+          {
+            "mes": "2026-01",
+            "gasto": 1810,
+            "clicks": 6103
+          },
+          {
+            "mes": "2026-02",
+            "gasto": 2100,
+            "clicks": 16222
+          },
+          {
+            "mes": "2026-03",
+            "gasto": 2438,
+            "clicks": 25475
+          }
+        ]
+      }
+    ],
+    "insightsGoogle": [
+      "Apenas PMax ativas — sem campanhas Search, Display ou Shopping manuais",
+      "PMax Toth gastou R9.3k total, PMax Todos gastou R7.8k — investimento similar",
+      "Search impression share 16% em ambas — perdendo 84% das impressoes de busca",
+      "Jan/25 foi o mes com maior gasto Google (R3k combinado) — coincide com Jan ter maior numero de vendas (63)",
+      "Abr-Mai/25 quase desligaram Google (R15 e R23) — mesmo assim ROAS geral foi 46x e 23x (Meta carregou)",
+      "Dez/25-Mar/26 Google voltou forte (R.7k-6.3k/mes) com dados de conversao melhorando",
+      "Ambas PMax usam MAXIMIZE_CONVERSION_VALUE — correto para o objetivo de receita",
+      "Clicks escalaram de ~3k/mes (mid-2025) para 25k/mes (mar-2026) — Google aprendendo com CAPI data"
+    ]
+  }
+}

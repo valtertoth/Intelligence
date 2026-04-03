@@ -1,0 +1,156 @@
+[
+  {
+    "id": "6936193079545",
+    "name": "[MEIO] [VENDAS] [BR] [REMARKETING] [COMPRA] [60D]",
+    "status": "PAUSED",
+    "daily_budget": "2500",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_SALES",
+    "spend": 86.06,
+    "ctr": 8.187729,
+    "cpc": 0.213548
+  },
+  {
+    "id": "6920933053345",
+    "name": "[TOPO] [ENGAJAMENTO] [BR] [REMARKETING] [ESPECIFICADORES] [180D] [SITE]",
+    "status": "PAUSED",
+    "daily_budget": "1500",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_ENGAGEMENT",
+    "spend": 324.76,
+    "ctr": 9.666197,
+    "cpc": 0.278286
+  },
+  {
+    "id": "6920316891545",
+    "name": "[MEIO] [LEADS] [BR] [REMARKETING] [60D] [SITE]",
+    "status": "PAUSED",
+    "daily_budget": "1500",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_LEADS",
+    "spend": 278.83,
+    "ctr": 7.08974,
+    "cpc": 0.219897
+  },
+  {
+    "id": "6920153304745",
+    "name": "[FUNDO] [VENDAS] [BR] [REMARKETING] [COMPRA] [60D]",
+    "status": "ACTIVE",
+    "daily_budget": "4000",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_SALES",
+    "spend": 472.66,
+    "ctr": 14.966246,
+    "cpc": 0.120454
+  },
+  {
+    "id": "6876970372345",
+    "name": "[FUNDO] [VENDAS] [BR] [REMARKETING] [WHATSAPP] [90D]",
+    "status": "ACTIVE",
+    "daily_budget": "3500",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_SALES",
+    "spend": 655.15,
+    "ctr": 8.562904,
+    "cpc": 0.196801
+  },
+  {
+    "id": "6876594869145",
+    "name": "[TOPO] [RECONHECIMENTO] [BR]",
+    "status": "PAUSED",
+    "daily_budget": "1500",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_AWARENESS",
+    "spend": 141.35,
+    "ctr": 0.056898,
+    "cpc": 1.884667
+  },
+  {
+    "id": "6858995145145",
+    "name": "[TOPO] [ENGAJAMENTO] [BR] [SEMELHANTE+INTERESSES] [VIP] [SITE]",
+    "status": "PAUSED",
+    "daily_budget": "2500",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_ENGAGEMENT",
+    "spend": 301.22,
+    "ctr": 13.858152,
+    "cpc": 0.229065
+  },
+  {
+    "id": "6855321931945",
+    "name": "[MEIO] [ENGAJAMENTO] [BR] [REMARKETING] 90D] [SITE]",
+    "status": "PAUSED",
+    "daily_budget": "1500",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_ENGAGEMENT",
+    "spend": 326.79,
+    "ctr": 9.169364,
+    "cpc": 0.240287
+  },
+  {
+    "id": "6851639061345",
+    "name": "[TOPO] [TRAFEGO] [BR] [SEMELHANTE+INTERESSES] [VIP] [SITE] [CATALOGO]",
+    "status": "ACTIVE",
+    "daily_budget": "2000",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_TRAFFIC",
+    "spend": 257.7,
+    "ctr": 7.686031,
+    "cpc": 0.073945
+  },
+  {
+    "id": "6842893531345",
+    "name": "[FUNDO] [ENGAJAMENTO] [PP] [REMARKETING] [90D] [SITE]",
+    "status": "PAUSED",
+    "daily_budget": "1500",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_ENGAGEMENT",
+    "spend": 94.44,
+    "ctr": 5.199275,
+    "cpc": 0.329059
+  },
+  {
+    "id": "6816156511145",
+    "name": "[FUNDO] [ENGAJAMENTO] [BR] [REMARKETING] [30D] [SITE] [CATALOGO]",
+    "status": "ACTIVE",
+    "daily_budget": "1500",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_ENGAGEMENT",
+    "spend": 458.84,
+    "ctr": 9.753606,
+    "cpc": 0.096112
+  },
+  {
+    "id": "6813398306945",
+    "name": "[MEIO] [VENDAS] [BR] [REMARKETING] [60D] [SITE]",
+    "status": "ACTIVE",
+    "daily_budget": "1500",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_SALES",
+    "spend": 383.32,
+    "ctr": 9.655899,
+    "cpc": 0.278778
+  },
+  {
+    "id": "6806041659345",
+    "name": "[MEIO] [TRAFEGO] [BR] [REMARKETING] [90D] [ESPECIFICADORES] [SITE]",
+    "status": "PAUSED",
+    "daily_budget": "1500",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_TRAFFIC",
+    "spend": 145.61,
+    "ctr": 1.450054,
+    "cpc": 1.078593
+  },
+  {
+    "id": "6645161284345",
+    "name": "[FUNDO] [TRAFEGO] [BR] [REMARKETING] [60D] [SITE] [CATALOGO]",
+    "status": "ACTIVE",
+    "daily_budget": "2500",
+    "bid_strategy": "LOWEST_COST_WITHOUT_CAP",
+    "objective": "OUTCOME_TRAFFIC",
+    "spend": 402.2,
+    "ctr": 11.822515,
+    "cpc": 0.021823
+  }
+]

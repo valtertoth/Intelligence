@@ -1,0 +1,47 @@
+[
+  {
+    "id": "capi_1741308873000",
+    "date": "2026-03-07T02:54:33.000Z",
+    "filename": "01-2026.xlsx",
+    "eventCount": 27,
+    "revenue": 108200,
+    "period": "2026-01-01 a 2026-01-31",
+    "pixelId": "851963738694822",
+    "fbtrace": "A1l8ltkHuaQ0QuSjXiqoOl",
+    "status": "success"
+  },
+  {
+    "id": "capi_1741309013000",
+    "date": "2026-03-07T02:56:53.000Z",
+    "filename": "02-2026.xlsx",
+    "eventCount": 24,
+    "revenue": 89800,
+    "period": "2026-02-01 a 2026-02-28",
+    "pixelId": "851963738694822",
+    "fbtrace": "AbFLYrsw_vxuZDs88S3othT",
+    "status": "success"
+  },
+  {
+    "id": "capi_1773092766152",
+    "date": "2026-03-09T21:46:06.152Z",
+    "filename": "teste-validacao-p1",
+    "eventCount": 36,
+    "revenue": 168384.75999999998,
+    "period": "2026-01-07 a 2026-02-28",
+    "pixelId": "851963738694822",
+    "fbtrace": "AL1ikNhF6rK6wUfW_7KDkPT",
+    "status": "success"
+  },
+  {
+    "id": "capi_1774974167825",
+    "date": "2026-03-31T16:22:47.825Z",
+    "filename": "03-2026.xlsx",
+    "eventCount": 8,
+    "revenue": 39155.86,
+    "period": "2026-03-24 a 2026-03-27",
+    "pixelId": "851963738694822",
+    "fbtrace": "Ap-_UMqyt-jBOZVrnLQWww5",
+    "status": "success",
+    "note": "8/24 orders sent (16 older than 7 days). 24/24 sent to Google Ads."
+  }
+]

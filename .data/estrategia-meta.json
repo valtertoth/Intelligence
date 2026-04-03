@@ -1,0 +1,208 @@
+{
+  "versao": "1.0",
+  "ultimaAtualizacao": "2026-04-02",
+  "objetivo": "Maximizar receita com menor investimento. Objetivo das campanhas: PURCHASE (OUTCOME_SALES). Vendas acontecem 100% via WhatsApp.",
+
+  "contextoNegocio": {
+    "empresa": "Toth Moveis",
+    "ticketMedio": 5942,
+    "vendasMes": 24,
+    "receitaMes": 142610,
+    "canalVenda": "WhatsApp (100% - nao ha checkout no site)",
+    "publicoAlvo": "Brasil, 25-65, classe A/B, moveis premium",
+    "topUFs": ["SP", "MG", "GO", "MS", "MT", "RJ"]
+  },
+
+  "principiosEstrategicos": [
+    "1. Objetivo SEMPRE Purchase (OUTCOME_SALES) - nunca Messages ou Trafego puro",
+    "2. CAPI semanal obrigatorio - enviar vendas para Meta e Google toda semana",
+    "3. Consolidar campanhas - menos campanhas = mais dados por campanha = algoritmo aprende melhor",
+    "4. Medir custo por MENSAGEM WHATSAPP e custo por VENDA REAL, nao por click",
+    "5. Nao criar campanhas novas sem antes avaliar resultado das existentes (minimo 7-14 dias)",
+    "6. Toda mudanca documentada aqui com data, motivo e resultado esperado"
+  ],
+
+  "historicoDecisoes": [
+    {
+      "data": "2026-03-27",
+      "sessao": "Conversa anterior",
+      "acoes": [
+        "PAUSAR 3 campanhas iOS-only (liberou R$65/dia)",
+        "AUMENTAR budget Engajamento 30D: R$20→R$40/dia (melhor performer R$5.32/WA)",
+        "AUMENTAR budget Vendas WhatsApp 30D: R$40→R$60/dia (#2 performer)",
+        "AUMENTAR budget Comprar 15D: R$30→R$45/dia (unica com Purchase)",
+        "AUMENTAR budget Trafego 60D: R$20→R$30/dia (alimenta remarketing)",
+        "CRIAR audiencia COMPRADORES REAIS (276 clientes, ID: 6970082813345)",
+        "CRIAR Lookalike 1% BR (ID: 6970084147945, ~1.5M pessoas)",
+        "CRIAR Lookalike 2% BR (ID: 6970084262145, ~3M pessoas)",
+        "EXCLUIR compradores de todas campanhas ativas",
+        "ADICIONAR Lookalike na campanha Trafego 60D",
+        "CRIAR campanha [TOTH] Catalogo Inteligente - Purchase (ID: 6970136805545, R$75/dia)",
+        "CRIAR campanha [TOTH] Remarketing - Conversao Quente (ID: 6970137032345)",
+        "CRIAR campanha [TOTH] Prospeccao - Lookalike Compradores (ID: 6970137251945)"
+      ],
+      "resultadoEsperado": "Aguardar 7-14 dias para avaliar performance das 3 novas campanhas",
+      "prazoAvaliacao": "2026-04-03 a 2026-04-10"
+    },
+    {
+      "data": "2026-03-27",
+      "sessao": "Conversa anterior (ajuste adicional)",
+      "acoes": [
+        "AUMENTAR budget Engajamento 30D: R$40→R$55/dia",
+        "REDUZIR budget Trafego 60D: R$20→R$6/dia (alto custo por msg)"
+      ]
+    },
+    {
+      "data": "2026-03-31",
+      "sessao": "Conversa atual",
+      "acoes": [
+        "CORRIGIR bug Meta API (path sem / causava erro v21.0act_xxx)",
+        "SINCRONIZAR 24 vendas marco para Google Ads (24/24 = 100%)",
+        "SINCRONIZAR 8 vendas recentes para Meta CAPI (8/24 - 16 expiraram >7 dias)",
+        "CARREGAR planilha 03-2026.xlsx no sistema (501 pedidos total)"
+      ],
+      "pendente": "Avaliar resultado das 3 campanhas criadas em 27/mar ANTES de fazer novas mudancas"
+    },
+    {
+      "data": "2026-04-02",
+      "sessao": "Conversa atual — correcao definitiva",
+      "acoes": [
+        "DELETAR 3 campanhas TOTH erradas (remarketing sem audiencia, CTA errado, destination UNDEFINED)",
+        "CRIAR [TOTH] Remarketing 90D — ClickWhatsApp (ID: 6978807692145, R$45/dia, 13 audiencias 90D)",
+        "CRIAR [TOTH] Prospeccao LAL 1% — ClickWhatsApp (ID: 6978820144545, R$30/dia, LAL compradores reais)",
+        "Ambas usam EXATA mesma otimizacao da campanha campea: ClickWhatsApp (custom_conversion_id: 732527922468225)",
+        "Ambas com status PAUSED — usuario vai analisar e ativar",
+        "Budget total TOTH: R$75/dia (dentro dos R$150/dia Meta)"
+      ],
+      "errosCorrigidos": [
+        "promoted_object agora usa ClickWhatsApp (evento com volume) ao inves de Purchase (sem volume)",
+        "Remarketing agora tem 13 audiencias reais de 90D",
+        "Prospeccao exclui remarketing para nao competir",
+        "instagram_user_id configurado corretamente",
+        "Criativo catalogo dinamico com formato identico ao da campea"
+      ],
+      "plano": "Avaliacoes em 09/abr (semana 1), 16/abr (semana 2), 30/abr (mensal). Zero mudancas entre avaliacoes."
+    }
+  ],
+
+  "campanhasAtivasConhecidas": {
+    "nota": "15 campanhas ativas em marco. 3 foram criadas em 27/mar e precisam de avaliacao.",
+    "novasCriadas27Mar": [
+      {"id": "6970136805545", "nome": "[TOTH] Catalogo Inteligente - Purchase", "budget": "R$75/dia", "objetivo": "OUTCOME_SALES", "status": "AGUARDANDO AVALIACAO"},
+      {"id": "6970137032345", "nome": "[TOTH] Remarketing - Conversao Quente", "budget": "desconhecido", "objetivo": "OUTCOME_SALES", "status": "AGUARDANDO AVALIACAO"},
+      {"id": "6970137251945", "nome": "[TOTH] Prospeccao - Lookalike Compradores", "budget": "desconhecido", "objetivo": "OUTCOME_SALES", "status": "AGUARDANDO AVALIACAO"}
+    ]
+  },
+
+  "avaliacoes": [
+    {
+      "data": "2026-03-31",
+      "periodo": "27-31/mar (4 dias)",
+      "resultados": {
+        "campanhasNovas": {
+          "catalogoInteligente": {"gasto": 301.17, "msgs": 1, "custoMsg": 301.17, "atc": 16, "purchase": 0, "veredicto": "Caro por msg, mas apenas 4 dias. CAPI iniciou hoje."},
+          "remarketingQuente": {"gasto": 267.83, "msgs": 2, "custoMsg": 133.91, "atc": 6, "purchase": 0, "veredicto": "Caro. Learning phase."},
+          "prospeccaoLAL": {"gasto": 146.27, "msgs": 0, "custoMsg": "infinito", "atc": 4, "purchase": 0, "veredicto": "Zero msgs. Learning phase."}
+        },
+        "campanhasAntigas": {
+          "vendasWPP30D": {"gasto": 239.59, "msgs": 42, "custoMsg": 5.70, "atc": 26, "veredicto": "CAMPEA - 80x mais eficiente que novas"},
+          "engajamento30D": {"gasto": 218.99, "msgs": 5, "custoMsg": 43.80, "freq": 10.9, "veredicto": "SATURADA - freq 10.9 = publico exausto"},
+          "comprar15D": {"gasto": 176.66, "msgs": 0, "veredicto": "Zero msgs"},
+          "trafego60D": {"gasto": 22.82, "msgs": 1, "veredicto": "Budget reduzido para R$6/dia"}
+        },
+        "conclusao": "Campanhas novas ainda em learning phase (4 dias). CAPI so comecou hoje. Dar mais 7-10 dias antes de decidir. Engajamento 30D saturada (freq 10.9). Vendas WPP 30D e a melhor campanha."
+      },
+      "decisao": "MANTER tudo como esta. Proxima avaliacao em 7 de abril.",
+      "alertas": [
+        "Engajamento 30D com freq 10.9 - considerar pausar ou trocar criativo",
+        "Enviar CAPI semanalmente para alimentar as campanhas Purchase"
+      ]
+    }
+  ],
+
+  "campanhasTOTH_v2": {
+    "dataCriacao": "2026-04-02",
+    "raciocinio": "Replicar exatamente o que funciona na campanha campea (Vendas WPP 30D): mesmo promoted_object (ClickWhatsApp, custom_conversion_id 732527922468225), mesmo optimization_goal (OFFSITE_CONVERSIONS), mesma attribution (7d click + 1d view). Diferenca APENAS na audiencia: 90D para remarketing (mais ampla que 30D da campea) e LAL 1% para prospeccao (publico novo).",
+    "campanhas": [
+      {
+        "id": "6978807692145",
+        "nome": "[TOTH] Remarketing 90D — ClickWhatsApp",
+        "budget": "R$45/dia",
+        "objetivo": "OUTCOME_SALES",
+        "otimizacao": "OFFSITE_CONVERSIONS (ClickWhatsApp)",
+        "audiencia": "13 audiencias remarketing 90D (IG 90D, FB 90D, Site 90D, WPP Produto 90D, WPP Seedgrow 90D, WPP Event 90D, Product Page View 90D, Add to Cart 90D, Initiate Checkout 90D, Payment Info 90D, Acabamento 90D, Catalogo 90D, Calculo Frete 90D)",
+        "exclusao": "COMPRADORES REAIS",
+        "geo": "Brasil inteiro, 25-65",
+        "criativo": "Catalogo dinamico Shopify, CTA SHOP_NOW",
+        "adsetId": "6978819756745",
+        "adId": "6978820070145",
+        "creativeId": "27302657732654481",
+        "status": "PAUSED — aguardando aprovacao do usuario"
+      },
+      {
+        "id": "6978820144545",
+        "nome": "[TOTH] Prospeccao LAL 1% — ClickWhatsApp",
+        "budget": "R$30/dia",
+        "objetivo": "OUTCOME_SALES",
+        "otimizacao": "OFFSITE_CONVERSIONS (ClickWhatsApp)",
+        "audiencia": "Lookalike 1% Compradores Reais (~1.2-1.4M pessoas)",
+        "exclusao": "COMPRADORES REAIS + Instagram 90D + Facebook 90D (evitar overlap com Remarketing)",
+        "geo": "Brasil inteiro, 25-65",
+        "criativo": "Catalogo dinamico Shopify, CTA SHOP_NOW",
+        "adsetId": "6978820148745",
+        "adId": "6978827820545",
+        "creativeId": "1453515472974360",
+        "status": "PAUSED — aguardando aprovacao do usuario"
+      }
+    ],
+    "budgetTotal": "R$75/dia (dentro dos R$75 alocados para campanhas TOTH)",
+    "metricasAlvo": {
+      "remarketingCustoMsg": "R$8-15 (benchmark: campea R$5.70)",
+      "prospeccaoCustoMsg": "R$15-25 (publico frio aceita custo maior)",
+      "gatilhoPausar": "Se custo/msg ultrapassar R$30 por 5 dias consecutivos"
+    }
+  },
+
+  "planoAcompanhamento": {
+    "descricao": "Plano fixo de avaliacao. NAO mudar estrategia antes dos marcos abaixo.",
+    "marcos": [
+      {
+        "data": "2026-04-02",
+        "acao": "Campanhas criadas PAUSED. Usuario analisa e ativa quando quiser.",
+        "status": "CONCLUIDO"
+      },
+      {
+        "data": "2026-04-09",
+        "acao": "AVALIACAO SEMANA 1 — Puxar metricas (gasto, msgs, custo/msg, CTR, frequencia). Comparar TOTH vs campanhas do usuario. NAO fazer mudancas, apenas observar.",
+        "status": "PENDENTE"
+      },
+      {
+        "data": "2026-04-16",
+        "acao": "AVALIACAO SEMANA 2 — Decidir: se custo/msg > R$30, pausar. Se < R$15, considerar aumentar budget. Se entre R$15-30, manter.",
+        "status": "PENDENTE"
+      },
+      {
+        "data": "2026-04-30",
+        "acao": "AVALIACAO MENSAL — Cruzar dados TOTH vs usuario. Calcular: msgs WhatsApp geradas, vendas atribuidas via CAPI, ROAS real. Decidir redistribuicao de budget para maio.",
+        "status": "PENDENTE"
+      }
+    ],
+    "regras": [
+      "ZERO mudancas entre avaliacoes — algoritmo precisa de estabilidade para aprender",
+      "Unica excecao para pausar: custo/msg > R$30 por 5 dias consecutivos",
+      "Toda avaliacao documentada neste arquivo com dados reais",
+      "Comparacao sempre TOTH vs campanhas do usuario — dados, nao opiniao"
+    ]
+  },
+
+  "proximaAcao": "Usuario analisa campanhas e ativa quando pronto. Proxima avaliacao: 9 de abril.",
+  "proximaAvaliacao": "2026-04-09",
+
+  "regrasDeOuro": [
+    "NAO criar campanhas novas sem avaliar as existentes (min 7 dias)",
+    "NAO mudar objetivo de Purchase para Messages",
+    "NAO fragmentar budget em muitas campanhas",
+    "SEMPRE documentar mudancas neste arquivo",
+    "SEMPRE enviar vendas via CAPI semanalmente"
+  ]
+}

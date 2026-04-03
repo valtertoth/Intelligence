@@ -1,0 +1,14 @@
+[
+  {
+    "id": "chg-1775255457342-6816156511145-budget",
+    "timestamp": "2026-04-03T22:30:57.342Z",
+    "campaignId": "6816156511145",
+    "campaignName": "[FUNDO] [ENGAJAMENTO] [BR] [REMARKETING] [30D] [SITE] [CATALOGO]",
+    "field": "Budget Diario",
+    "type": "budget",
+    "oldValue": "R$ 55,00",
+    "newValue": "R$ 60,00",
+    "description": "Budget alterado",
+    "auto": true
+  }
+]

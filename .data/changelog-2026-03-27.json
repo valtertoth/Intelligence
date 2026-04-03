@@ -1,0 +1,330 @@
+{
+  "date": "2026-03-27",
+  "operator": "Toth Intelligence v4 - AI Optimizer",
+  "backupFile": "backup-campaigns-2026-03-27",
+  "changes": [
+    {
+      "phase": "1A",
+      "action": "PAUSE",
+      "campaign": "[TOPO] [TRAFEGO] [VIP] iOS (6851639061345)",
+      "reason": "R$138.60/WA, iOS only, pior performance",
+      "budgetFreed": 20
+    },
+    {
+      "phase": "1A",
+      "action": "PAUSE",
+      "campaign": "[MEIO] [VENDAS] [60D] iOS (6813398306945)",
+      "reason": "R$37.55/WA, iOS only",
+      "budgetFreed": 15
+    },
+    {
+      "phase": "1A",
+      "action": "PAUSE",
+      "campaign": "[VENDAS] [WHATSAPP] [90D] iOS (6876970372345)",
+      "reason": "R$11.40/WA, duplicata do 30D, iOS only",
+      "budgetFreed": 30
+    },
+    {
+      "phase": "1B",
+      "action": "BUDGET_UP",
+      "campaign": "Engajamento 30D (6816156511145)",
+      "change": "R$20→R$40/dia",
+      "reason": "#1 performer R$5.32/WA"
+    },
+    {
+      "phase": "1B",
+      "action": "BUDGET_UP",
+      "campaign": "Vendas WhatsApp 30D (6955261012745)",
+      "change": "R$40→R$60/dia",
+      "reason": "#2 performer R$5.37/WA"
+    },
+    {
+      "phase": "1B",
+      "action": "BUDGET_UP",
+      "campaign": "Comprar 15D (6969765391945)",
+      "change": "R$30→R$45/dia",
+      "reason": "Unica com Purchase, acelerar aprendizado"
+    },
+    {
+      "phase": "1B",
+      "action": "BUDGET_UP",
+      "campaign": "Tráfego 60D (6645161284345)",
+      "change": "R$20→R$30/dia",
+      "reason": "R$0.03/click, alimenta remarketing"
+    },
+    {
+      "phase": "2A",
+      "action": "CREATE_AUDIENCE",
+      "id": "6970082813345",
+      "name": "COMPRADORES REAIS",
+      "details": "276 clientes unicos, 477 vendas, ticket medio R$7.354"
+    },
+    {
+      "phase": "2B",
+      "action": "UPLOAD_BUYERS",
+      "audienceId": "6970082813345",
+      "buyersUploaded": 276,
+      "invalidEntries": 0
+    },
+    {
+      "phase": "2C",
+      "action": "CREATE_LOOKALIKE",
+      "id": "6970084147945",
+      "name": "Semelhante 1% BR Compradores Reais",
+      "estimatedSize": "1.5M"
+    },
+    {
+      "phase": "2C",
+      "action": "CREATE_LOOKALIKE",
+      "id": "6970084262145",
+      "name": "Semelhante 2% BR Compradores Reais",
+      "estimatedSize": "3M"
+    },
+    {
+      "phase": "3",
+      "action": "EXCLUDE_BUYERS",
+      "campaigns": "Todas as 4 ativas",
+      "audienceId": "6970082813345"
+    },
+    {
+      "phase": "3",
+      "action": "ADD_LOOKALIKE",
+      "campaign": "Tráfego 60D",
+      "audienceId": "6970084147945"
+    },
+    {
+      "phase": "4A",
+      "action": "CREATE_CAMPAIGN",
+      "id": "6970136805545",
+      "name": "[TOTH] Catálogo Inteligente — Purchase",
+      "objective": "OUTCOME_SALES",
+      "optimization": "PURCHASE",
+      "budget": "R$75/dia",
+      "bidStrategy": "LOWEST_COST_WITHOUT_CAP",
+      "adsetId": "6970136907145",
+      "adId": "6970136991545",
+      "targeting": "Brasil, 25-65, Advantage+ Audience, excluindo compradores",
+      "creative": "Catálogo dinâmico Shopify (612 produtos), Instagram + Facebook"
+    },
+    {
+      "phase": "4B",
+      "action": "CREATE_CAMPAIGN",
+      "id": "6970137032345",
+      "name": "[TOTH] Remarketing — Conversão Quente",
+      "objective": "OUTCOME_SALES",
+      "optimization": "PURCHASE",
+      "budget": "R$65/dia",
+      "bidStrategy": "LOWEST_COST_WITHOUT_CAP",
+      "adsetId": "6970137039345",
+      "adId": "6970137184545",
+      "targeting": "Brasil, 25-65, Advantage+ Audience, excluindo compradores",
+      "creative": "Catálogo dinâmico com copy de remarketing/urgência"
+    },
+    {
+      "phase": "4C",
+      "action": "CREATE_CAMPAIGN",
+      "id": "6970137251945",
+      "name": "[TOTH] Prospecção — Lookalike Compradores",
+      "objective": "OUTCOME_SALES",
+      "optimization": "PURCHASE",
+      "budget": "R$35/dia",
+      "bidStrategy": "LOWEST_COST_WITHOUT_CAP",
+      "adsetId": "6970137331945",
+      "adId": "6970137376945",
+      "targeting": "Brasil, 25-65, LAL 1%+2% compradores, excluindo compradores, Advantage+ Audience",
+      "creative": "Catálogo dinâmico com copy de prospecção/descoberta"
+    },
+    {
+      "phase": "4",
+      "action": "SERVER_FIX",
+      "detail": "metaWrite alterado de URLSearchParams (form-urlencoded) para JSON body — resolvia erro 'Invalid parameter' em objetos aninhados (promoted_object, targeting)"
+    },
+    {
+      "phase": "5",
+      "action": "ACTIVATE_NEW_CAMPAIGNS",
+      "detail": "Fase 1 da transição gradual — ativadas 3 novas campanhas Purchase-optimized",
+      "campaigns": [
+        "6970136805545",
+        "6970137032345",
+        "6970137251945"
+      ]
+    },
+    {
+      "phase": "5",
+      "action": "REDUCE_BUDGET",
+      "campaign": "Tráfego 60D (6645161284345)",
+      "change": "R$30→R$20/dia",
+      "reason": "Reduzir topo de funil, novas campanhas cobrem volume"
+    },
+    {
+      "phase": "5",
+      "action": "DELETE_GHOST_CAMPAIGNS",
+      "count": 12,
+      "ids": [
+        "6936193079545",
+        "6920933053345",
+        "6920316891545",
+        "6920153304745",
+        "6876970372345",
+        "6876594869145",
+        "6858995145145",
+        "6855321931945",
+        "6851639061345",
+        "6842893531345",
+        "6813398306945",
+        "6806041659345"
+      ],
+      "reason": "Todas com R$0 gasto lifetime — nunca rodaram, só poluíam a conta"
+    },
+    {
+      "phase": "6",
+      "action": "FIX_GOOGLE_CONVERSIONS",
+      "detail": "9 conversion actions demovidas de PRIMARY para SECONDARY — eliminando ~26.700 conversões falsas/mês",
+      "demoted": [
+        {
+          "id": "7018911012",
+          "name": "WHATSAPP PÁGINA DO PRODUTO",
+          "monthlyFake": 26203
+        },
+        {
+          "id": "957353274",
+          "name": "Google Shopping App Add To Cart"
+        },
+        {
+          "id": "957353277",
+          "name": "Google Shopping App Begin Checkout"
+        },
+        {
+          "id": "957353400",
+          "name": "Google Shopping App Search"
+        },
+        {
+          "id": "957353403",
+          "name": "Google Shopping App Add Payment Info"
+        },
+        {
+          "id": "998726818",
+          "name": "GA4 carrinho"
+        },
+        {
+          "id": "6480945328",
+          "name": "GA4 begin_checkout"
+        },
+        {
+          "id": "7425246168",
+          "name": "Cotação de Frete"
+        },
+        {
+          "id": "7425299463",
+          "name": "Lead - Downloads"
+        }
+      ],
+      "keptPrimary": [
+        {
+          "id": "518639213",
+          "name": "Google Ads - Conversão - Compra"
+        },
+        {
+          "id": "949559279",
+          "name": "Toth Móveis – GA4 (web) purchase"
+        },
+        {
+          "id": "957353268",
+          "name": "Google Shopping App Purchase"
+        },
+        {
+          "id": "7550273246",
+          "name": "Compra Offline (Import)"
+        }
+      ],
+      "backupFile": "backup-google-conversions-2026-03-27.json"
+    },
+    {
+      "phase": "6",
+      "action": "REMOVE_PAUSED_GOOGLE_CAMPAIGNS",
+      "count": 11,
+      "ids": [
+        "21396798232",
+        "13768619196",
+        "21785134797",
+        "21795509644",
+        "22679959355",
+        "22120279429",
+        "21119248537",
+        "13771354754",
+        "22679937977",
+        "22926998293",
+        "22158029916"
+      ],
+      "reason": "Todas pausadas, R$115K+ gasto lifetime com resultados reais insignificantes (inflados por bug WhatsApp)",
+      "campaigns": [
+        "PMax | Todos | Região",
+        "[DB][PSQ][DSA] - Todos Produtos",
+        "Display | Vendas | Remarketing | WhatsApp ou Carrinho 60D",
+        "Display | Vendas | Remarketing | Visitantes 60D",
+        "Vendas | Shopping | Remarketing 60D | WhatsApp",
+        "PMAX - BR - FORNECEDORES",
+        "DISPLAY - INTERESSES",
+        "[DB][PESQ][INSTITUCIONAL] - Name",
+        "Display | Tráfego | Remarketing | Produto 30D",
+        "Youtube | Remarketing 60D",
+        "PMAX - BR - REMARKETING 60D"
+      ]
+    },
+    {
+      "phase": "7",
+      "action": "BUDGET_REALLOC",
+      "detail": "Transferencia de budget baseada em Inteligencia Cruzada",
+      "changes": [
+        {
+          "campaign": "Trafego 60D (6645161284345)",
+          "change": "R$20->R$6/dia",
+          "reason": "R$23.17/WA 4.8x pior que Engajamento"
+        },
+        {
+          "campaign": "Engajamento 30D (6816156511145)",
+          "change": "R$40->R$55/dia",
+          "reason": "R$4.85/WA melhor creative. Escalar vencedor."
+        }
+      ]
+    },
+    {
+      "phase": "8",
+      "action": "FIX_DISABLED_ADSETS",
+      "detail": "3 campanhas TOTH tinham ad sets e ads PAUSED desde criação — ativados manualmente",
+      "activated": [
+        {"type": "adset", "id": "6970136907145", "name": "[TOTH] Catálogo — Brasil — Compradores", "status": "ACTIVE"},
+        {"type": "adset", "id": "6970137039345", "name": "[TOTH] Remarketing — Visitantes + Engajadores 30D", "status": "ACTIVE"},
+        {"type": "adset", "id": "6970137331945", "name": "[TOTH] Prospecção — LAL 1%+2% Compradores", "status": "ACTIVE"},
+        {"type": "ad", "id": "6970136991545", "name": "[TOTH] Ad Catálogo Dinâmico — Purchase", "status": "ACTIVE"},
+        {"type": "ad", "id": "6970137184545", "name": "[TOTH] Ad Remarketing — Conversão Quente", "status": "ACTIVE"},
+        {"type": "ad", "id": "6970137376945", "name": "[TOTH] Ad Prospecção — LAL Compradores", "status": "ACTIVE"}
+      ],
+      "budgetNowLive": "R$175/dia (Catálogo R$75 + Remarketing R$65 + Prospecção R$35)"
+    }
+  ],
+  "summary": {
+    "campaignsBeforeTotal": 19,
+    "campaignsAfterTotal": 7,
+    "campaignsActive": 7,
+    "campaignsDeleted": 12,
+    "newCampaignsCreated": 3,
+    "newCampaignsStatus": "ACTIVE — Fase 1 transição gradual",
+    "budgetTotal": "R$340/dia (Fase 1) → meta R$195/dia (Fase 3 em ~14 dias)",
+    "budgetBreakdown": "Catálogo R$75 + Remarketing R$65 + Prospecção R$35 + Comprar15D R$45 + WhatsApp30D R$60 + Engajamento30D R$40 + Tráfego60D R$20",
+    "nextSteps": "Dia 7: reduzir antigas. Dia 14+: pausar antigas se novas performarem",
+    "newAudiences": 3,
+    "buyersUploaded": 276,
+    "exclusionsApplied": 4,
+    "googleAds": {
+      "campaignsBefore": 13,
+      "campaignsAfterActive": 2,
+      "campaignsRemoved": 11,
+      "conversionsDemoted": 9,
+      "fakeConversionsEliminatedPerMonth": "~26.700",
+      "primaryConversionsNow": "Apenas compras reais (4 actions)",
+      "budgetTotal": "R$200/dia (PMax Todos R$120 + PMax Toth R$80)",
+      "nextSteps": "Aguardar 7-14 dias para PMax re-aprender com conversões corretas"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+node_modules/
+.data/keys.json
+.data/temp-b64.txt
+.claude/settings.local.json
+server.log
+nul

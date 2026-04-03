@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "priority": "critica",
+    "title": "Recuperar R$334.7k em Carrinhos Abandonados",
+    "detail": "100 checkouts abandonados. Mesa Diamante (32un), Cadeira Star (16un). Implementar email/WhatsApp em 24h. Impacto: R$50.211",
+    "status": "pendente",
+    "channel": "Shopify+Meta"
+  },
+  {
+    "id": 2,
+    "priority": "critica",
+    "title": "Corrigir 901 Produtos Merchant Center",
+    "detail": "895 sem preco, 228 sem link, 32 pagina offline. +29% produtos no Shopping. Impacto: R$28.080/ano",
+    "status": "pendente",
+    "channel": "Google"
+  },
+  {
+    "id": 3,
+    "priority": "critica",
+    "title": "Funil View-to-Cart 0.37% — CRITICO",
+    "detail": "143.5k views, 536 carts. Benchmark 2-3%. A/B test CTAs, urgencia, reviews. Impacto: R$33.474",
+    "status": "pendente",
+    "channel": "Shopify"
+  },
+  {
+    "id": 4,
+    "priority": "alta",
+    "title": "PAUSAR Trafego 60D — R$23.17/conv",
+    "detail": "Custa 4.8x mais que Engajamento. Realocar R$20/dia. Economia R$7.200/ano + 124 WA extras",
+    "status": "pendente",
+    "channel": "Meta"
+  },
+  {
+    "id": 5,
+    "priority": "alta",
+    "title": "Escalar Creative Engajamento Remarketing",
+    "detail": "Melhor creative R$4.85/WA. Aumentar R$40→R$100/dia. +R$12.204/ano",
+    "status": "pendente",
+    "channel": "Meta"
+  },
+  {
+    "id": 6,
+    "priority": "alta",
+    "title": "Campanha Mesa Diamante — Lider Abandonos",
+    "detail": "32 abandonos. Criar campanha especifica Meta+Google R$30/dia. Impacto: R$22.400",
+    "status": "pendente",
+    "channel": "Meta+Google"
+  },
+  {
+    "id": 7,
+    "priority": "media",
+    "title": "Otimizar Horarios Google 13-15h e 20-22h",
+    "detail": "CPA R$0.13 nos melhores horarios. Concentrar 60% budget. ROAS 1.10x→1.65x",
+    "status": "pendente",
+    "channel": "Google"
+  },
+  {
+    "id": 8,
+    "priority": "media",
+    "title": "Monetizar Blog — 4.114 Cliques Gratis",
+    "detail": "67% trafego organico. CTAs produtos nos posts top. R$14.350/mes",
+    "status": "pendente",
+    "channel": "SEO"
+  },
+  {
+    "id": 9,
+    "priority": "media",
+    "title": "Otimizar Mobile — 86% do Trafego",
+    "detail": "WhatsApp flutuante + checkout 1 clique. Conv 3.08%→4.5%. R$15.210/mes",
+    "status": "pendente",
+    "channel": "Shopify"
+  },
+  {
+    "id": 10,
+    "priority": "media",
+    "title": "Monitorar 3 Campanhas TOTH Novas",
+    "detail": "Learning phase. Aguardar 7 dias, verificar metricas, escalar vencedoras",
+    "status": "pendente",
+    "channel": "Meta"
+  }
+]
