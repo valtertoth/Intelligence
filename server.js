@@ -684,6 +684,34 @@ function serveStatic(res, filePath) {
 // ═══════════════════════════════════════════════════════════
 // NEXUS STATE (must be declared before server handler)
 // ═══════════════════════════════════════════════════════════
+// GLOBAL HELPERS (used by both server handler and Nexus sync)
+// ═══════════════════════════════════════════════════════════
+function removeAccents(str) {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function hashForMeta(value, type) {
+  if (!value || value === '(em branco)') return '';
+  var normalized = String(value).trim().toLowerCase();
+  normalized = removeAccents(normalized);
+  if (!normalized) return '';
+  if (type === 'phone') { normalized = normalized.replace(/\D/g, ''); if (!normalized || normalized.length < 8) return ''; }
+  else if (type === 'email') { normalized = normalized.replace(/\s/g, ''); if (!normalized.includes('@')) return ''; }
+  else if (type === 'name') { normalized = normalized.replace(/[^a-z]/g, ''); if (!normalized) return ''; }
+  else if (type === 'city') { normalized = normalized.replace(/[^a-z]/g, ''); if (!normalized) return ''; }
+  else if (type === 'state') { normalized = normalized.replace(/[^a-z]/g, ''); if (normalized.length > 2) normalized = normalized.substring(0, 2); }
+  else if (type === 'country') { normalized = normalized.replace(/[^a-z]/g, ''); }
+  else { normalized = normalized.replace(/[^a-z0-9]/g, ''); if (!normalized) return ''; }
+  return crypto.createHash('sha256').update(normalized).digest('hex');
+}
+
+function splitName(fullName) {
+  if (!fullName) return { fn: '', ln: '' };
+  var parts = fullName.trim().split(/\s+/);
+  return { fn: parts[0] || '', ln: parts[parts.length - 1] || '' };
+}
+
+// ═══════════════════════════════════════════════════════════
 // NEXUS AUTO-SYNC ENGINE (must be before http.createServer)
 // ═══════════════════════════════════════════════════════════
 var _nexusSyncInterval = null;
@@ -732,11 +760,11 @@ function _nexusSyncConversions() {
               var orderDate = ev.created_at ? ev.created_at.substring(0, 10) : new Date().toISOString().substring(0, 10);
               if (orderDate < cutoffStr) { ackResults.push({ id: ev.id, success: false, error: 'Older than 7 days' }); continue; }
               var eventTime = Math.floor(new Date(orderDate + 'T18:00:00-03:00').getTime() / 1000);
-              var userData = { country: [hashForMeta('br')] };
-              if (ev.contact_email) userData.em = [hashForMeta(ev.contact_email)];
-              if (ev.contact_phone || ev.contact_wa_id) { var ph = String(ev.contact_phone || ev.contact_wa_id).replace(/\D/g, ''); if (ph.length === 10 || ph.length === 11) ph = '55' + ph; userData.ph = [hashForMeta(ph)]; }
-              if (ev.contact_wa_id) userData.external_id = [hashForMeta(ev.contact_wa_id)];
-              var capiEvent = { event_name: 'Purchase', event_time: eventTime, action_source: 'system_generated', user_data: userData, custom_data: { value: Number(ev.value || 0), currency: ev.currency || 'BRL', content_name: ev.product_name || '', order_id: ev.id, content_type: 'product' } };
+              var userData = { country: [hashForMeta('br', 'country')] };
+              if (ev.contact_email) { var he = hashForMeta(ev.contact_email, 'email'); if (he) userData.em = [he]; }
+              if (ev.contact_phone || ev.contact_wa_id) { var ph = String(ev.contact_phone || ev.contact_wa_id).replace(/\D/g, ''); if (ph.length === 10 || ph.length === 11) ph = '55' + ph; if (ph.length >= 12) { var hp = hashForMeta(ph, 'phone'); if (hp) userData.ph = [hp]; } }
+              if (ev.contact_wa_id) { var hid = hashForMeta(ev.contact_wa_id); if (hid) userData.external_id = [hid]; }
+              var capiEvent = { event_name: 'Purchase', event_time: eventTime, action_source: 'business_messaging', user_data: userData, custom_data: { value: Number(ev.value || 0), currency: ev.currency || 'BRL', content_name: ev.product_name || '', order_id: ev.id, content_type: 'product' } };
               try {
                 var capiUrl = 'https://graph.facebook.com/' + META_API_VERSION + '/' + KEYS.pixelId + '/events';
                 var capiResult = await httpsRequest(capiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ data: [capiEvent], access_token: KEYS.meta }), timeout: 30000 });
@@ -1070,19 +1098,53 @@ http.createServer(async (req, res) => {
     // OFFLINE CONVERSION UPLOAD — Meta CAPI + Google Ads
     // ═══════════════════════════════════════════════════════════
 
-    // Helper: hash PII for Meta CAPI (SHA-256, normalized)
-    function hashForMeta(value) {
+    // Helper: remove accents (ã→a, ç→c, etc.)
+    function removeAccents(str) {
+      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    // Helper: hash PII for Meta CAPI (SHA-256, normalized per Meta spec)
+    // Meta requires: lowercase, trim, remove punctuation but KEEP spaces for names/cities
+    function hashForMeta(value, type) {
       if (!value || value === '(em branco)') return '';
-      const normalized = String(value).trim().toLowerCase().replace(/[^a-z0-9@._+\-]/g, '');
+      let normalized = String(value).trim().toLowerCase();
+      normalized = removeAccents(normalized);
       if (!normalized) return '';
+
+      if (type === 'phone') {
+        // Phone: digits only, with country code
+        normalized = normalized.replace(/\D/g, '');
+        if (!normalized || normalized.length < 8) return '';
+      } else if (type === 'email') {
+        // Email: lowercase, trim whitespace only
+        normalized = normalized.replace(/\s/g, '');
+        if (!normalized.includes('@')) return '';
+      } else if (type === 'name' || type === 'city') {
+        // Names/cities: lowercase, remove accents, keep only letters and spaces
+        normalized = normalized.replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ').trim();
+        if (!normalized) return '';
+      } else if (type === 'state') {
+        // State: lowercase 2-letter code
+        normalized = normalized.replace(/[^a-z]/g, '');
+        if (normalized.length > 2) normalized = normalized.substring(0, 2);
+      } else if (type === 'country') {
+        // Country: 2-letter lowercase
+        normalized = normalized.replace(/[^a-z]/g, '');
+      } else {
+        // Default (cpf/external_id): alphanumeric only
+        normalized = normalized.replace(/[^a-z0-9]/g, '');
+        if (!normalized) return '';
+      }
+
       return crypto.createHash('sha256').update(normalized).digest('hex');
     }
 
-    // Helper: split full name into first/last
+    // Helper: split full name into first name + LAST name (surname only)
     function splitName(fullName) {
       if (!fullName) return { fn: '', ln: '' };
       const parts = fullName.trim().split(/\s+/);
-      return { fn: parts[0] || '', ln: parts.slice(1).join(' ') || '' };
+      // fn = first name, ln = LAST word only (surname), not all middle names
+      return { fn: parts[0] || '', ln: parts[parts.length - 1] || '' };
     }
 
     // ── Send offline conversions to Meta CAPI ──
@@ -1124,24 +1186,23 @@ http.createServer(async (req, res) => {
 
         const userData = {};
         // Hash all PII fields per Meta spec
-        if (order.email && order.email !== '(em branco)') userData.em = [hashForMeta(order.email)];
-        if (order.phone) {
-          // Normalize BR phone: add country code 55
+        if (order.email && order.email !== '(em branco)') { const h = hashForMeta(order.email, 'email'); if (h) userData.em = [h]; }
+        if (order.phone && order.phone !== '(em branco)') {
           let phone = String(order.phone).replace(/\D/g, '');
           if (phone.length === 10 || phone.length === 11) phone = '55' + phone;
-          userData.ph = [hashForMeta(phone)];
+          if (phone.length >= 12) { const h = hashForMeta(phone, 'phone'); if (h) userData.ph = [h]; }
         }
-        if (fn) userData.fn = [hashForMeta(fn)];
-        if (ln) userData.ln = [hashForMeta(ln)];
-        if (order.city) userData.ct = [hashForMeta(order.city)];
-        if (order.state) userData.st = [hashForMeta(order.state.toLowerCase())];
-        userData.country = [hashForMeta('br')];
-        if (order.cpf) userData.external_id = [hashForMeta(order.cpf)];
+        if (fn) { const h = hashForMeta(fn, 'name'); if (h) userData.fn = [h]; }
+        if (ln) { const h = hashForMeta(ln, 'name'); if (h) userData.ln = [h]; }
+        if (order.city) { const h = hashForMeta(order.city, 'city'); if (h) userData.ct = [h]; }
+        if (order.state) { const h = hashForMeta(order.state, 'state'); if (h) userData.st = [h]; }
+        userData.country = [hashForMeta('br', 'country')];
+        if (order.cpf && order.cpf !== '(em branco)') { const h = hashForMeta(order.cpf); if (h) userData.external_id = [h]; }
 
         events.push({
           event_name: 'Purchase',
           event_time: eventTime,
-          action_source: 'system_generated',
+          action_source: 'business_messaging',
           user_data: userData,
           custom_data: {
             value: Number(order.revenue || 0),
@@ -1309,21 +1370,42 @@ http.createServer(async (req, res) => {
           orderId: order.orderId || order._key || '',
         };
 
-        // User identifiers for enhanced conversions
+        // User identifiers for enhanced conversions (Google Ads spec)
         const userIdentifiers = [];
         if (order.email && order.email !== '(em branco)') {
-          userIdentifiers.push({ hashedEmail: hashForMeta(order.email) });
+          // Google: lowercase, trim. Gmail/Googlemail: remove dots from username, remove +suffix
+          let email = order.email.trim().toLowerCase();
+          const atIdx = email.indexOf('@');
+          if (atIdx > 0) {
+            const domain = email.substring(atIdx + 1);
+            if (domain === 'gmail.com' || domain === 'googlemail.com') {
+              let user = email.substring(0, atIdx).replace(/\./g, '');
+              const plusIdx = user.indexOf('+');
+              if (plusIdx > 0) user = user.substring(0, plusIdx);
+              email = user + '@' + domain;
+            }
+          }
+          if (email.includes('@')) {
+            const h = crypto.createHash('sha256').update(email).digest('hex');
+            userIdentifiers.push({ hashedEmail: h });
+          }
         }
-        if (order.phone) {
+        if (order.phone && order.phone !== '(em branco)') {
+          // Google: E.164 format WITH + sign, then hash the whole string including +
           let phone = String(order.phone).replace(/\D/g, '');
-          if (phone.length === 10 || phone.length === 11) phone = '+55' + phone;
-          else if (!phone.startsWith('+')) phone = '+' + phone;
-          userIdentifiers.push({ hashedPhoneNumber: hashForMeta(phone) });
+          if (phone.length === 10 || phone.length === 11) phone = '55' + phone;
+          if (phone.length >= 12) {
+            const e164 = '+' + phone;
+            const h = crypto.createHash('sha256').update(e164).digest('hex');
+            userIdentifiers.push({ hashedPhoneNumber: h });
+          }
         }
         if (fn || ln) {
           const addr = {};
-          if (fn) addr.hashedFirstName = hashForMeta(fn);
-          if (ln) addr.hashedLastName = hashForMeta(ln);
+          // Google: lowercase, remove spaces, then hash
+          if (fn) { const n = removeAccents(fn).toLowerCase().replace(/[^a-z]/g, ''); if (n) addr.hashedFirstName = crypto.createHash('sha256').update(n).digest('hex'); }
+          if (ln) { const n = removeAccents(ln).toLowerCase().replace(/[^a-z]/g, ''); if (n) addr.hashedLastName = crypto.createHash('sha256').update(n).digest('hex'); }
+          // Google: city, state, countryCode are PLAIN TEXT (NOT hashed)
           if (order.city) addr.city = order.city;
           if (order.state) addr.state = order.state;
           addr.countryCode = 'BR';
