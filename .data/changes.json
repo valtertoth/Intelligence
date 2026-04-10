@@ -1,13 +1,37 @@
 [
   {
-    "id": "chg-1775255457342-6816156511145-budget",
-    "timestamp": "2026-04-03T22:30:57.342Z",
-    "campaignId": "6816156511145",
-    "campaignName": "[FUNDO] [ENGAJAMENTO] [BR] [REMARKETING] [30D] [SITE] [CATALOGO]",
+    "id": "chg-1775788133646-6969765391945-status",
+    "timestamp": "2026-04-10T02:28:53.646Z",
+    "campaignId": "6969765391945",
+    "campaignName": "[FUNDO] [VENDAS] [BR] [REMARKETING] [COMPRAR] [15D]",
+    "field": "Status",
+    "type": "status",
+    "oldValue": "PAUSED",
+    "newValue": "ACTIVE",
+    "description": "Status alterado: PAUSED -> ACTIVE",
+    "auto": true
+  },
+  {
+    "id": "chg-1775788133647-6969765391945-budget",
+    "timestamp": "2026-04-10T02:28:53.647Z",
+    "campaignId": "6969765391945",
+    "campaignName": "[FUNDO] [VENDAS] [BR] [REMARKETING] [COMPRAR] [15D]",
     "field": "Budget Diario",
     "type": "budget",
-    "oldValue": "R$ 55,00",
-    "newValue": "R$ 60,00",
+    "oldValue": "R$ 40,00",
+    "newValue": "R$ 15,00",
+    "description": "Budget alterado",
+    "auto": true
+  },
+  {
+    "id": "chg-1775788133648-6816156511145-budget",
+    "timestamp": "2026-04-10T02:28:53.648Z",
+    "campaignId": "6816156511145",
+    "campaignName": "[FUNDO] [ENGAJAMENTO] [BR] [REMARKETING] [30D]",
+    "field": "Budget Diario",
+    "type": "budget",
+    "oldValue": "R$ 30,00",
+    "newValue": "R$ 25,00",
     "description": "Budget alterado",
     "auto": true
   }

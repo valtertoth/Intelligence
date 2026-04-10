@@ -1,0 +1,531 @@
+[
+  {
+    "summary": "ROAS despencou 84% desde outubro (9.6x→15.4x março). Meta desperdiça R$4,5k/mês com CPM R$154 em campanhas ruins enquanto Google PMax mantém performance consistente. 78 produtos desaprovados no Merchant Center bloqueiam R$293k em carrinho abandonado.",
+    "healthScore": 32,
+    "insights": [
+      {
+        "dimension": "funnel",
+        "severity": "critical",
+        "title": "Funil quebrado: 99.6% abandono entre visualização e carrinho",
+        "detail": "201.085 visualizações de produtos resultaram em apenas 802 add-to-cart (0.4%). Taxa crítica indica problemas de UX, preço ou confiança. R$293k em carrinhos abandonados confirmam interesse mas falta conversão."
+      },
+      {
+        "dimension": "opportunity",
+        "severity": "critical",
+        "title": "31% dos produtos bloqueados no Google Shopping",
+        "detail": "78 de 250 produtos desaprovados por preço/estoque faltando. 'Mesa de jantar' tem 81k impressões orgânicas mas não aparece nos anúncios. Perdendo tráfego qualificado em queries de alta intenção."
+      },
+      {
+        "dimension": "audience",
+        "severity": "warning",
+        "title": "Meta desperdiça verba em campanhas ineficientes",
+        "detail": "Campanha 'REMARKETING COMPRAR 15D': R$629 gastou, 3 mensagens (R$210/msg). Campanha 'TOTH Catálogo': R$301 gastou, 1 mensagem (R$301/msg). Enquanto campanha eficiente gera R$5.65/mensagem."
+      },
+      {
+        "dimension": "product",
+        "severity": "opportunity",
+        "title": "Desalinhamento entre demanda orgânica e investimento pago",
+        "detail": "Banquetas: 28 cliques orgânicos, 31k impressões, posição 3.8 - alta demanda sem cobertura paga adequada. Produtos top de vendas (POLTRONA ALUMÍNIO, CADEIRA GOLD) não aparecem nas top queries."
+      },
+      {
+        "dimension": "timing",
+        "severity": "warning",
+        "title": "Queda de performance coincide com dezembro-fevereiro",
+        "detail": "ROAS caiu de 9.8x (nov) para 2.2x (dez), recuperando em março (15.4x). Padrão sugere sazonalidade não ajustada nos orçamentos e targeting durante período de baixa demanda."
+      }
+    ],
+    "actions": [
+      {
+        "priority": 1,
+        "title": "Pausar campanhas Meta com CPM alto imediatamente",
+        "description": "Pausar '[FUNDO] REMARKETING COMPRAR 15D' (R$210/msg) e 'TOTH Catálogo Inteligente' (R$301/msg). Realocar R$930 para campanhas eficientes.",
+        "estimatedImpact": "Economia R$930/mês + 164 mensagens extras",
+        "type": "meta_pause",
+        "executable": true,
+        "risk": "low",
+        "params": {
+          "campaign_names": [
+            "[FUNDO] [VENDAS] [BR] [REMARKETING] [COMPRAR] [15D]",
+            "[TOTH] Catálogo Inteligente — Purchase"
+          ]
+        }
+      },
+      {
+        "priority": 1,
+        "title": "Corrigir produtos desaprovados no Merchant Center",
+        "description": "Adicionar preços e dados de estoque para os 78 produtos desaprovados. Priorizar 'mesa de jantar' e 'banquetas' que têm alta demanda orgânica.",
+        "estimatedImpact": "Liberação de R$293k em potencial de vendas",
+        "type": "manual",
+        "executable": false,
+        "risk": "low",
+        "params": {}
+      },
+      {
+        "priority": 2,
+        "title": "Aumentar orçamento Google PMax em 50%",
+        "description": "Google mantém ROAS consistente 25x+ enquanto Meta oscila. Aumentar de R$150 para R$225/dia no PMax para capturar mais tráfego qualificado.",
+        "estimatedImpact": "Adicional R$11.25k receita/mês",
+        "type": "google_budget",
+        "executable": true,
+        "risk": "low",
+        "params": {
+          "daily_budget_increase": 75
+        }
+      },
+      {
+        "priority": 3,
+        "title": "Criar campanhas específicas para produtos de alta demanda",
+        "description": "Criar anúncios focados em 'banquetas', 'mesa de jantar' e 'cadeiras' baseado nas 113k impressões orgânicas dessas queries com baixo CTR.",
+        "estimatedImpact": "Captura adicional 2-5% do tráfego orgânico",
+        "type": "manual",
+        "executable": false,
+        "risk": "medium",
+        "params": {}
+      },
+      {
+        "priority": 4,
+        "title": "Implementar recuperação de carrinho abandonado",
+        "description": "Email/WhatsApp sequência para os R$293k em carrinhos abandonados. Oferecer desconto progressivo ou frete grátis após 24h/48h/7d.",
+        "estimatedImpact": "Recuperação 5-10% = R$14-29k",
+        "type": "manual",
+        "executable": false,
+        "risk": "low",
+        "params": {}
+      },
+      {
+        "priority": 5,
+        "title": "Otimizar landing pages para conversão",
+        "description": "Taxa 0.4% add-to-cart indica problema de UX. A/B test: botões WhatsApp mais visíveis, preços destacados, depoimentos, garantias.",
+        "estimatedImpact": "Dobrar taxa para 0.8% = +400 add-to-cart/mês",
+        "type": "manual",
+        "executable": false,
+        "risk": "medium",
+        "params": {}
+      }
+    ],
+    "budgetReallocation": {
+      "currentMeta": 150,
+      "currentGoogle": 150,
+      "recommendedMeta": 75,
+      "recommendedGoogle": 225,
+      "reasoning": "Google PMax mantém ROAS 25x consistente vs Meta oscilando 2-15x. Reduzir Meta 50% pausando campanhas ineficientes e aumentar Google 50% para capturar mais demanda qualificada."
+    },
+    "analyzedAt": "2026-04-10T02:49:28.648Z",
+    "dataTokens": 6518
+  },
+  {
+    "summary": "Performance crítica em dezembro/2026 prejudicou ROAS geral, mas março mostrou recuperação forte (15.4x). Meta Ads desperdiça R$154/mensagem em algumas campanhas enquanto outras geram mensagens por R$6. 78 produtos desaprovados no Merchant Center limitam potencial do Google.",
+    "healthScore": 42,
+    "insights": [
+      {
+        "dimension": "funnel",
+        "severity": "critical",
+        "title": "Quebra severa no funil: 57.831 visualizações vs 283 carritos",
+        "detail": "Taxa de conversão view_item→add_to_cart de apenas 0.49%. Com 63 carritos abandonados valendo R$293.922, há R$4.665 de ticket médio por carrinho não finalizado. O problema não é tráfego (70k usuários), mas sim a experiência de compra no site."
+      },
+      {
+        "dimension": "product",
+        "severity": "critical",
+        "title": "78 produtos desaprovados no Merchant Center limitam Google Ads",
+        "detail": "31% do catálogo (78/250 produtos) está desaprovado por preços ausentes, falta de estoque e páginas indisponíveis. Isso reduz drasticamente o potencial do Google Shopping e PMax, que já mostra 10% de share apenas."
+      },
+      {
+        "dimension": "opportunity",
+        "severity": "warning",
+        "title": "Queries de alto volume sem investimento publicitário",
+        "detail": "'Mesa de jantar' tem 81.473 impressões mas CTR 0.1% e posição 4.6. 'Banqueta' tem 31.820 impressões, CTR 0.2%. São oportunidades de criar campanhas específicas para essas keywords de alta demanda."
+      },
+      {
+        "dimension": "audience",
+        "severity": "warning",
+        "title": "Desalinhamento geográfico: 56% das vendas em SP, mas orçamento disperso",
+        "detail": "SP representa R$1.276.755 (56% das vendas), RJ R$207.422 (9%), mas as campanhas Meta não mostram segmentação geográfica específica. Concentrar orçamento nos estados de maior conversão pode melhorar ROAS."
+      },
+      {
+        "dimension": "timing",
+        "severity": "opportunity",
+        "title": "Sazonalidade identificada: dezembro crítico, março forte",
+        "detail": "Dezembro teve ROAS 2.2x vs março 15.4x. Janeiro/fevereiro mantiveram ~5.5x. Há padrão claro de sazonalidade que deve orientar orçamento mensal e estratégia de campanhas."
+      }
+    ],
+    "actions": [
+      {
+        "priority": 1,
+        "title": "Pausar campanhas Meta ineficientes imediatamente",
+        "description": "Pausar '[FUNDO] [VENDAS] [BR] [REMARKETING] [COMPRAR] [15D]' (R$210/msg) e '[TOTH] Catálogo Inteligente' (R$301/msg). Realocar orçamento para '[MEIO] [VENDAS] [BR] [REMARKETING] [WHATSAPP] [30D]' que gera msg por R$6.",
+        "estimatedImpact": "Economia R$2.000/mês + 15% mais mensagens",
+        "type": "meta_pause",
+        "executable": true,
+        "risk": "low",
+        "params": {
+          "campaigns": [
+            "[FUNDO] [VENDAS] [BR] [REMARKETING] [COMPRAR] [15D]",
+            "[TOTH] Catálogo Inteligente – Purchase"
+          ]
+        }
+      },
+      {
+        "priority": 1,
+        "title": "Corrigir produtos desaprovados no Merchant Center",
+        "description": "Ajustar 126 produtos com preços ausentes e 64 com problemas de estoque. Isso liberará 76% mais produtos para Google Shopping e PMax, potencialmente dobrando o alcance.",
+        "estimatedImpact": "Aumento 50-100% performance Google Ads",
+        "type": "manual",
+        "executable": false,
+        "risk": "low",
+        "params": {}
+      },
+      {
+        "priority": 2,
+        "title": "Implementar campanhas específicas para 'mesa de jantar' e 'banqueta'",
+        "description": "Criar campanhas Google Ads para queries de alto volume. 'Mesa de jantar' tem 81k impressões mensais, 'banqueta' 31k. Com CTR melhor, pode gerar 400+ cliques adicionais/mês.",
+        "estimatedImpact": "R$15.000-30.000 receita adicional/mês",
+        "type": "google_budget",
+        "executable": false,
+        "risk": "medium",
+        "params": {}
+      },
+      {
+        "priority": 3,
+        "title": "Segmentar geograficamente campanhas Meta por performance",
+        "description": "Concentrar 60% do orçamento Meta em SP (56% das vendas), 15% RJ (9% vendas), 25% demais. Atual dispersão reduz eficiência.",
+        "estimatedImpact": "Melhoria 20-30% ROAS Meta",
+        "type": "meta_budget",
+        "executable": false,
+        "risk": "medium",
+        "params": {}
+      },
+      {
+        "priority": 4,
+        "title": "Implementar recuperação de carrinho abandonado",
+        "description": "63 carrinhos abandonados = R$293.922 em potencial perdido. Implementar sequência de email/WhatsApp automática para reativação dentro de 24h-7dias.",
+        "estimatedImpact": "Recuperação 15-25% = R$44.000-73.000",
+        "type": "capi_send",
+        "executable": false,
+        "risk": "low",
+        "params": {}
+      }
+    ],
+    "budgetReallocation": {
+      "currentMeta": 150,
+      "currentGoogle": 150,
+      "recommendedMeta": 100,
+      "recommendedGoogle": 200,
+      "reasoning": "Google mostra ROAS consistente 25x histórico vs Meta irregular. Reduzir Meta até otimizar campanhas ineficientes, aumentar Google enquanto corrige Merchant Center."
+    },
+    "analyzedAt": "2026-04-10T02:56:04.604Z",
+    "dataTokens": 6518
+  },
+  {
+    "summary": "Meta Ads está com CPC de mensagem extremamente alto (até R$209) enquanto Google PMax mantém ROAS consistente de 25x. 78 produtos no Merchant Center têm problemas críticos que limitam performance do Google. Budget está mal distribuído entre plataformas.",
+    "healthScore": 65,
+    "insights": [
+      {
+        "dimension": "audience",
+        "severity": "critical",
+        "title": "Meta Ads com CPC de mensagem insustentável",
+        "detail": "Campanha [FUNDO] [VENDAS] [BR] [REMARKETING] [COMPRAR] [15D] gastou R$629 para apenas 3 mensagens (R$209/msg). Campanhas de engajamento também ineficientes: R$799 para 59 mensagens (R$13,5/msg). Apenas a campanha principal [MEIO] [VENDAS] mantém eficiência com R$5,65/msg."
+      },
+      {
+        "dimension": "product",
+        "severity": "critical",
+        "title": "78 produtos com problemas no Merchant Center",
+        "detail": "31% dos produtos (78/250) não podem aparecer no Google Shopping: 126 sem preço, 64 sem estoque, 33 sem página. Isso limita severamente o alcance do Google PMax que tem ROAS de 25x comprovado."
+      },
+      {
+        "dimension": "opportunity",
+        "severity": "warning",
+        "title": "Queries de alto volume sem investimento em ads",
+        "detail": "Query 'mesa de jantar' tem 81.473 impressões orgânicas com apenas 0,1% CTR (posição 4.6). 'Banqueta' tem 31.820 impressões. Essas queries de alta demanda deveriam ter campanhas Google Ads dedicadas."
+      },
+      {
+        "dimension": "funnel",
+        "severity": "warning",
+        "title": "Taxa de add_to_cart extremamente baixa",
+        "detail": "Apenas 802 add_to_cart de 201.085 view_item (0,4%). Com 63 carrinhos abandonados valendo R$293.922, há potencial significativo de recuperação via remarketing."
+      },
+      {
+        "dimension": "timing",
+        "severity": "opportunity",
+        "title": "Recuperação forte em março 2026",
+        "detail": "ROAS subiu de 5.8x (fev) para 15.4x (mar) com receita de R$142.610. Tendência positiva sugere que estratégias atuais estão funcionando e merecem mais investimento."
+      }
+    ],
+    "actions": [
+      {
+        "priority": 1,
+        "title": "Pausar campanhas Meta com CPC alto",
+        "description": "Pausar [FUNDO] [VENDAS] [COMPRAR] [15D] (R$209/msg) e [FUNDO] [ENGAJAMENTO] (R$13,5/msg). Manter apenas campanhas com CPC <R$10/msg",
+        "estimatedImpact": "Economia de R$1.428/mês + redirecionamento para Google",
+        "type": "meta_pause",
+        "executable": true,
+        "risk": "low",
+        "params": {
+          "campaigns": [
+            "[FUNDO] [VENDAS] [BR] [REMARKETING] [COMPRAR] [15D]",
+            "[FUNDO] [ENGAJAMENTO] [BR] [REMARKETING] [30D]"
+          ]
+        }
+      },
+      {
+        "priority": 2,
+        "title": "Corrigir produtos no Merchant Center",
+        "description": "Resolver 78 produtos com problemas: adicionar preços em 126 produtos, dados de estoque em 64, corrigir 33 páginas. Priorizar produtos mais vendidos como POLTRONA DE ESTAR e CADEIRA GOLD",
+        "estimatedImpact": "Aumento de 30% no alcance Google Shopping = +R$42.783/mês",
+        "type": "manual",
+        "executable": false,
+        "risk": "low",
+        "params": {}
+      },
+      {
+        "priority": 3,
+        "title": "Realocar 60% do budget para Google PMax",
+        "description": "Google mantém ROAS 25x consistente vs Meta com ROAS em queda. Aumentar Google de R$150 para R$240/dia, reduzir Meta de R$150 para R$60/dia",
+        "estimatedImpact": "Aumento estimado de R$67.500/mês em receita",
+        "type": "google_budget",
+        "executable": true,
+        "risk": "medium",
+        "params": {
+          "dailyBudget": 240
+        }
+      },
+      {
+        "priority": 4,
+        "title": "Criar campanhas Google para queries de alta demanda",
+        "description": "Campanhas específicas para 'mesa de jantar' (81k impressões), 'banqueta' (31k impressões), focando em produtos que realmente vendemos",
+        "estimatedImpact": "Captura de 15% do tráfego perdido = +R$28.500/mês",
+        "type": "manual",
+        "executable": false,
+        "risk": "medium",
+        "params": {}
+      },
+      {
+        "priority": 5,
+        "title": "Implementar remarketing para carrinhos abandonados",
+        "description": "63 carrinhos abandonados (R$293.922) representam 2x o faturamento mensal atual. Criar sequência de e-mails + Meta Ads para recuperação",
+        "estimatedImpact": "Recuperação de 20% = R$58.784",
+        "type": "manual",
+        "executable": false,
+        "risk": "low",
+        "params": {}
+      }
+    ],
+    "budgetReallocation": {
+      "currentMeta": 150,
+      "currentGoogle": 150,
+      "recommendedMeta": 60,
+      "recommendedGoogle": 240,
+      "reasoning": "Google PMax mantém ROAS 25x consistente enquanto Meta tem campanhas com R$209 por mensagem. Realocação aproveitará eficiência comprovada do Google"
+    },
+    "analyzedAt": "2026-04-10T02:57:45.298Z",
+    "dataTokens": 6518
+  },
+  {
+    "summary": "ROAS caiu drasticamente de 15.4x para 1.8x com Meta gerando mensagens muito caras (R$31/msg vs histórico de R$6). Google PMax mantém performance sólida mas 78 produtos reprovados no Merchant Center limitam alcance.",
+    "healthScore": 32,
+    "insights": [
+      {
+        "dimension": "funnel",
+        "severity": "critical",
+        "title": "Meta Ads com eficiência colapsada",
+        "detail": "Custo por mensagem disparou para R$31 (vs R$6 histórico). Campanhas de remarketing com R$154/msg ([FUNDO] COMPRAR 15D) queimando orçamento sem retorno. Taxa de conversão view→cart caiu para 0.2%."
+      },
+      {
+        "dimension": "product",
+        "severity": "critical",
+        "title": "31% dos produtos bloqueados no Google",
+        "detail": "78 de 250 produtos reprovados no Merchant Center por preço faltante (126 erros) e dados de estoque ausentes (64 erros). Isso limita o alcance do PMax que tem ROAS 25x comprovado."
+      },
+      {
+        "dimension": "opportunity",
+        "severity": "warning",
+        "title": "Demanda orgânica não monetizada",
+        "detail": "Query 'mesa de jantar' tem 81.473 impressões mas CTR 0.1% e posição 4.6. 'Banqueta' com 31.820 impressões poderia gerar mais tráfego pago considerando que produtos de banqueta vendem bem."
+      },
+      {
+        "dimension": "timing",
+        "severity": "warning",
+        "title": "Sazonalidade dezembro impactou performance",
+        "detail": "ROAS despencou para 2.2x em dezembro (vs 9.6x outubro). Março recuperou para 15.4x mas abril mostra novo declínio. Padrão sugere ajuste de orçamento sazonal necessário."
+      },
+      {
+        "dimension": "audience",
+        "severity": "opportunity",
+        "title": "Concentração geográfica subutilizada",
+        "detail": "SP representa 55.7% das vendas (R$1.276k) mas campanha VIP [TOPO] tem apenas R$269 investidos. DF (R$161k vendas) e MG (R$126k) podem justificar campanhas segmentadas."
+      }
+    ],
+    "actions": [
+      {
+        "priority": 1,
+        "title": "Pausar campanhas Meta de baixa performance imediatamente",
+        "description": "Pausar [FUNDO] COMPRAR 15D (R$209/msg), [TOTH] Catálogo Inteligente (R$301/msg) e [TOPO] VIP (R$134/msg) que estão queimando orçamento",
+        "estimatedImpact": "Economia R$800/dia + redirecionamento para Google",
+        "type": "meta_pause",
+        "executable": true,
+        "risk": "low",
+        "params": {
+          "campaigns": [
+            "[FUNDO] [VENDAS] [BR] [REMARKETING] [COMPRAR] [15D]",
+            "[TOTH] Catálogo Inteligente — Purchase",
+            "[TOPO] [TRAFEGO] [BR] [SEMELHANTE+INTERESSES] [VIP] [SITE] [CATALOGO]"
+          ]
+        }
+      },
+      {
+        "priority": 1,
+        "title": "Corrigir produtos reprovados no Merchant Center",
+        "description": "Adicionar preços em 126 produtos sem preço e dados de estoque em 64 produtos. Isso pode aumentar alcance do PMax em 31%",
+        "estimatedImpact": "Aumento potencial de R$45k/mês no Google",
+        "type": "manual",
+        "executable": false,
+        "risk": "low",
+        "params": {}
+      },
+      {
+        "priority": 2,
+        "title": "Transferir 70% do orçamento Meta para Google",
+        "description": "Reduzir Meta de R$150/dia para R$45/dia mantendo apenas campanjas eficientes. Aumentar Google de R$150 para R$255/dia aproveitando ROAS 25x",
+        "estimatedImpact": "ROAS potencial de 8.5x vs 1.8x atual",
+        "type": "google_budget",
+        "executable": true,
+        "risk": "medium",
+        "params": {
+          "newDailyBudget": 255
+        }
+      },
+      {
+        "priority": 3,
+        "title": "Criar campanhas Google Ads para queries de alta demanda",
+        "description": "Criar anúncios para 'mesa de jantar' (81k impressões) e 'banqueta' (31k impressões) que têm demanda mas baixo CTR orgânico",
+        "estimatedImpact": "Potencial de R$15k/mês adicional",
+        "type": "manual",
+        "executable": false,
+        "risk": "medium",
+        "params": {}
+      },
+      {
+        "priority": 4,
+        "title": "Implementar remarketing para carrinhos abandonados",
+        "description": "63 carrinhos abandonados valendo R$293k precisam de estratégia de recuperação via email e WhatsApp",
+        "estimatedImpact": "Recuperação de 15-20% = R$44-59k",
+        "type": "manual",
+        "executable": false,
+        "risk": "low",
+        "params": {}
+      }
+    ],
+    "budgetReallocation": {
+      "currentMeta": 150,
+      "currentGoogle": 150,
+      "recommendedMeta": 45,
+      "recommendedGoogle": 255,
+      "reasoning": "Google PMax mantém ROAS 25x consistente enquanto Meta despencou para 1.8x. Realocar orçamento para plataforma eficiente até corrigir problemas do Meta."
+    },
+    "analyzedAt": "2026-04-10T03:04:37.853Z",
+    "dataTokens": 6518
+  },
+  {
+    "summary": "Performance está em recuperação com ROAS 15.4x em março, mas Meta tem campanhas ineficientes (até R$301/msg) enquanto Google PMax mantém consistência. Oportunidade crítica em Merchant Center com 78 produtos desaprovados perdendo tráfego orgânico gratuito.",
+    "healthScore": 72,
+    "insights": [
+      {
+        "dimension": "opportunity",
+        "severity": "critical",
+        "title": "78 produtos desaprovados no Merchant Center perdendo tráfego gratuito",
+        "detail": "31% dos produtos (78 de 250) estão desaprovados no Merchant Center, principalmente por preços e estoque em falta. Isso impede aparições no Google Shopping orgânico para queries como 'mesa de jantar' (81k impressões) e 'banqueta' (31k impressões), perdendo tráfego qualificado gratuito."
+      },
+      {
+        "dimension": "funnel",
+        "severity": "critical",
+        "title": "Taxa de conversão Add to Cart extremamente baixa: 0.4%",
+        "detail": "De 201.164 visualizações de produto, apenas 803 adicionaram ao carrinho (0.4%). Taxa normal seria 2-5%. Indica problemas na página do produto, preço, ou experiência do usuário que impedem a progressão no funil de vendas."
+      },
+      {
+        "dimension": "audience",
+        "severity": "warning",
+        "title": "Meta desperdiçando budget em campanhas de baixa performance",
+        "detail": "Campanhas '[TOTH] Catálogo Inteligente' (R$301/msg) e '[TOPO] TRÁFEGO' (R$135/msg) têm CPM altíssimo vs. campanha eficiente '[MEIO] VENDAS REMARKETING' (R$6/msg). R$570 sendo desperdiçados em audiências erradas."
+      },
+      {
+        "dimension": "product",
+        "severity": "opportunity",
+        "title": "Produtos top de vendas sem cobertura adequada em ads",
+        "detail": "POLTRONA DE ESTAR (R$44k vendas) e CADEIRA MONIC (R$87k total) são top sellers mas podem não ter cobertura específica nas campanhas atuais do Google PMax, perdendo oportunidade de escalar produtos comprovadamente lucrativos."
+      },
+      {
+        "dimension": "timing",
+        "severity": "opportunity",
+        "title": "Recuperação forte em março indica momento ideal para acelerar",
+        "detail": "ROAS saltou de 5.8x (fevereiro) para 15.4x (março) com 24 vendas vs 18. Momento ideal para aumentar budget e capturar momentum, especialmente no Google PMax que mantém consistência."
+      }
+    ],
+    "actions": [
+      {
+        "priority": 1,
+        "title": "Pausar campanhas Meta ineficientes imediatamente",
+        "description": "Pausar '[TOTH] Catálogo Inteligente' (R$301/msg) e reduzir budget da '[TOPO] TRÁFEGO' em 70%. Realocate R$400/mês para campanhas de remarketing que convertem a R$6/msg.",
+        "estimatedImpact": "Economia R$400/mês + 65 msgs extras",
+        "type": "meta_pause",
+        "executable": true,
+        "risk": "low",
+        "params": {
+          "campaigns": [
+            "[TOTH] Catálogo Inteligente",
+            "[TOPO] TRAFEGO"
+          ]
+        }
+      },
+      {
+        "priority": 2,
+        "title": "Corrigir produtos desaprovados no Merchant Center",
+        "description": "Corrigir os 78 produtos desaprovados: adicionar preços ausentes (126x), dados de estoque (64x) e verificar páginas indisponíveis (33x). Isso liberará tráfego orgânico gratuito do Google Shopping.",
+        "estimatedImpact": "50-100 cliques orgânicos extras/mês",
+        "type": "manual",
+        "executable": false,
+        "risk": "low",
+        "params": {}
+      },
+      {
+        "priority": 3,
+        "title": "Aumentar budget Google PMax aproveitando momentum",
+        "description": "Aumentar budget Google PMax de R$100/dia para R$150/dia. Com ROAS atual de 25x e recuperação em março, há margem para escalar mantendo rentabilidade.",
+        "estimatedImpact": "R$37.500 receita adicional/mês",
+        "type": "google_budget",
+        "executable": true,
+        "risk": "medium",
+        "params": {
+          "newBudget": 150
+        }
+      },
+      {
+        "priority": 4,
+        "title": "Otimizar páginas de produto para aumentar Add to Cart",
+        "description": "Taxa de 0.4% indica problema sério na experiência. Implementar urgência, garantias, facilitar acesso ao WhatsApp, melhorar fotos/descrições dos produtos top sellers (Poltrona, Cadeira Monic).",
+        "estimatedImpact": "Dobrar taxa para 0.8% = +400 leads/mês",
+        "type": "manual",
+        "executable": false,
+        "risk": "low",
+        "params": {}
+      },
+      {
+        "priority": 5,
+        "title": "Criar campanhas específicas para produtos top sellers",
+        "description": "Criar campanhas Google Ads específicas para Poltrona de Estar e linha Cadeira Monic, que somam R$131k em vendas. Usar keywords de alta intenção como 'poltrona premium' e 'cadeira escritório madeira'.",
+        "estimatedImpact": "R$15.000 receita adicional/mês",
+        "type": "manual",
+        "executable": false,
+        "risk": "medium",
+        "params": {}
+      }
+    ],
+    "budgetReallocation": {
+      "currentMeta": 150,
+      "currentGoogle": 150,
+      "recommendedMeta": 100,
+      "recommendedGoogle": 200,
+      "reasoning": "Meta tem campanhas desperdiçando R$400/mês enquanto Google PMax mantém ROAS 25x consistente. Realocação maximiza ROI geral da conta."
+    },
+    "analyzedAt": "2026-04-10T03:06:28.963Z",
+    "dataTokens": 6518
+  }
+]
