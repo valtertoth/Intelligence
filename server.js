@@ -728,37 +728,32 @@ async function collectAllIntelligenceData() {
   log('🧠', 'Collecting intelligence data from all sources...');
   const results = {};
 
-  // Helper: internal HTTP call to self
-  function selfCall(route, body) {
-    return new Promise((resolve) => {
-      const req = http.request({ hostname: 'localhost', port: PORT, path: route, method: body ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json' }, timeout: 25000 }, (res) => {
-        let data = ''; res.on('data', c => data += c);
-        res.on('end', () => { try { resolve(JSON.parse(data)); } catch { resolve(null); } });
-      });
-      req.on('error', () => resolve(null));
-      if (body) req.write(JSON.stringify(body));
-      req.end();
-    });
-  }
+  // Safe wrapper for direct function calls
+  function safe(fn) { return fn().catch(function(e) { log('⚠️', 'Brain data source error: ' + e.message); return null; }); }
 
-  // Collect in parallel
+  const aid = (KEYS.adAccountId || '').replace('act_', '');
+  const siteUrl = KEYS.gscSiteUrl || 'https://www.tothmoveis.com.br/';
+  const merchantId = KEYS.merchantId || '243128782';
+  const dateClause = gaqlDateClause(30);
+
+  // Collect in parallel using DIRECT function calls (no self-HTTP)
   const [meta, google, ga4Channels, ga4Funnel, ga4Devices, ga4Landing, gscQueries, gscPages, merchant, shopifyOrders, shopifyAbandoned] = await Promise.allSettled([
-    selfCall('/meta/read', { path: '/act_' + (KEYS.adAccountId || '').replace('act_', '') + '/insights?date_preset=last_30d&fields=campaign_name,campaign_id,objective,spend,impressions,reach,clicks,ctr,actions,frequency&level=campaign&limit=30&sort=spend_descending' }),
-    selfCall('/google/campaigns', { startDate: new Date(Date.now() - 30*86400000).toISOString().substring(0,10), endDate: new Date().toISOString().substring(0,10) }),
-    selfCall('/ga4/report', { reportBody: { dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'sessionDefaultChannelGroup' }], metrics: [{ name: 'sessions' }, { name: 'totalUsers' }, { name: 'conversions' }, { name: 'bounceRate' }] } }),
-    selfCall('/ga4/report', { reportBody: { dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }], dimensionFilter: { filter: { fieldName: 'eventName', inListFilter: { values: ['page_view','view_item','add_to_cart','begin_checkout','purchase','session_start'] } } } } }),
-    selfCall('/ga4/report', { reportBody: { dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'sessions' }, { name: 'bounceRate' }] } }),
-    selfCall('/ga4/report', { reportBody: { dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'landingPagePlusQueryString' }], metrics: [{ name: 'sessions' }, { name: 'conversions' }], orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: '20' } }),
-    KEYS.googleRefreshToken ? selfCall('/gsc/query', { siteUrl: 'https://www.tothmoveis.com.br/', dimensions: ['query'], rowLimit: 200 }) : Promise.resolve(null),
-    KEYS.googleRefreshToken ? selfCall('/gsc/query', { siteUrl: 'https://www.tothmoveis.com.br/', dimensions: ['page'], rowLimit: 100 }) : Promise.resolve(null),
-    selfCall('/merchant/products', { merchantId: '243128782' }),
-    selfCall('/shopify/orders', {}),
-    selfCall('/shopify/abandoned', {}),
+    KEYS.meta ? safe(() => metaRead('/act_' + aid + '/insights?date_preset=last_30d&fields=campaign_name,campaign_id,objective,spend,impressions,reach,clicks,ctr,actions,frequency&level=campaign&limit=30&sort=spend_descending')) : Promise.resolve(null),
+    KEYS.googleDevToken ? safe(() => withRetry(() => googleAdsQuery('SELECT campaign.name, campaign.id, campaign.status, campaign.advertising_channel_type, campaign.bidding_strategy_type, metrics.cost_micros, metrics.clicks, metrics.impressions, metrics.conversions_value, metrics.search_impression_share FROM campaign WHERE ' + dateClause + ' AND campaign.status != \'REMOVED\''))) : Promise.resolve(null),
+    KEYS.ga4PropertyId ? safe(() => ga4Report({ dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'sessionDefaultChannelGroup' }], metrics: [{ name: 'sessions' }, { name: 'totalUsers' }, { name: 'conversions' }, { name: 'bounceRate' }] })) : Promise.resolve(null),
+    KEYS.ga4PropertyId ? safe(() => ga4Report({ dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }], dimensionFilter: { filter: { fieldName: 'eventName', inListFilter: { values: ['page_view','view_item','add_to_cart','begin_checkout','purchase','session_start'] } } } })) : Promise.resolve(null),
+    KEYS.ga4PropertyId ? safe(() => ga4Report({ dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'sessions' }, { name: 'bounceRate' }] })) : Promise.resolve(null),
+    KEYS.ga4PropertyId ? safe(() => ga4Report({ dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'landingPagePlusQueryString' }], metrics: [{ name: 'sessions' }, { name: 'conversions' }], orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: '20' })) : Promise.resolve(null),
+    KEYS.googleRefreshToken ? safe(async () => { const token = await googleRefreshToken(); const encodedUrl = encodeURIComponent(siteUrl); const r = await httpsRequest('https://www.googleapis.com/webmasters/v3/sites/' + encodedUrl + '/searchAnalytics/query', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ startDate: new Date(Date.now()-30*86400000).toISOString().substring(0,10), endDate: new Date().toISOString().substring(0,10), dimensions: ['query'], rowLimit: 200 }), timeout: 30000 }); return r.data; }) : Promise.resolve(null),
+    KEYS.googleRefreshToken ? safe(async () => { const token = await googleRefreshToken(); const encodedUrl = encodeURIComponent(siteUrl); const r = await httpsRequest('https://www.googleapis.com/webmasters/v3/sites/' + encodedUrl + '/searchAnalytics/query', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ startDate: new Date(Date.now()-30*86400000).toISOString().substring(0,10), endDate: new Date().toISOString().substring(0,10), dimensions: ['page'], rowLimit: 100 }), timeout: 30000 }); return r.data; }) : Promise.resolve(null),
+    KEYS.googleRefreshToken ? safe(async () => { const token = await googleRefreshToken(); const r = await httpsRequest('https://shoppingcontent.googleapis.com/content/v2.1/' + merchantId + '/productstatuses?maxResults=250', { headers: { 'Authorization': 'Bearer ' + token }, timeout: 30000 }); return r.data; }) : Promise.resolve(null),
+    (KEYS.shopifyStore && KEYS.shopifyToken) ? safe(async () => { const r = await shopifyGraphQL('{ orders(first:50,sortKey:CREATED_AT,reverse:true,query:"created_at:>' + new Date(Date.now()-90*86400000).toISOString().split('T')[0] + '"){edges{node{id name createdAt totalPriceSet{shopMoney{amount}} customer{firstName lastName}}}}}'); return (r.orders?.edges||[]).map(e=>e.node); }) : Promise.resolve(null),
+    (KEYS.shopifyStore && KEYS.shopifyToken) ? safe(async () => { const r = await shopifyGraphQL('{ abandonedCheckouts(first:100,sortKey:CREATED_AT,reverse:true){edges{node{id createdAt totalPriceSet{shopMoney{amount}} lineItems(first:5){edges{node{title quantity}}}}}}}}'); return (r.abandonedCheckouts?.edges||[]).map(e=>e.node); }) : Promise.resolve(null),
   ]);
 
   // Extract results (handle failures)
-  results.meta = meta.status === 'fulfilled' ? meta.value : null;
-  results.google = google.status === 'fulfilled' ? google.value : null;
+  results.meta = meta.status === 'fulfilled' ? (meta.value?.data ? meta.value : { data: meta.value }) : null;
+  results.google = google.status === 'fulfilled' ? (Array.isArray(google.value) ? google.value : []) : null;
   results.ga4Channels = ga4Channels.status === 'fulfilled' ? ga4Channels.value : null;
   results.ga4Funnel = ga4Funnel.status === 'fulfilled' ? ga4Funnel.value : null;
   results.ga4Devices = ga4Devices.status === 'fulfilled' ? ga4Devices.value : null;
@@ -1218,25 +1213,25 @@ http.createServer(async (req, res) => {
           autoSyncActive: !!_nexusSyncInterval,
         },
         savedKeys: {
-          anthropic: KEYS.anthropic || '',
-          openai: KEYS.openai || '',
-          gemini: KEYS.gemini || '',
-          meta: KEYS.meta || '',
+          anthropic: KEYS.anthropic ? '***' + KEYS.anthropic.slice(-4) : '',
+          openai: KEYS.openai ? '***' + KEYS.openai.slice(-4) : '',
+          gemini: KEYS.gemini ? '***' + KEYS.gemini.slice(-4) : '',
+          meta: KEYS.meta ? '***' + KEYS.meta.slice(-4) : '',
           adAccountId: KEYS.adAccountId || '',
           pixelId: KEYS.pixelId || '',
-          googleDevToken: KEYS.googleDevToken || '',
+          googleDevToken: KEYS.googleDevToken ? '***' + KEYS.googleDevToken.slice(-4) : '',
           googleClientId: KEYS.googleClientId || '',
-          googleClientSecret: KEYS.googleClientSecret || '',
-          googleRefreshToken: KEYS.googleRefreshToken || '',
+          googleClientSecret: KEYS.googleClientSecret ? '***' : '',
+          googleRefreshToken: KEYS.googleRefreshToken ? '***' + KEYS.googleRefreshToken.slice(-4) : '',
           googleCustomerId: KEYS.googleCustomerId || '',
           googleLoginCustomerId: KEYS.googleLoginCustomerId || '',
           ga4PropertyId: KEYS.ga4PropertyId || '',
           shopifyStore: KEYS.shopifyStore || '',
-          shopifyToken: KEYS.shopifyToken || '',
+          shopifyToken: KEYS.shopifyToken ? '***' + KEYS.shopifyToken.slice(-4) : '',
           shopifyClientId: KEYS.shopifyClientId || '',
-          shopifyClientSecret: KEYS.shopifyClientSecret || '',
+          shopifyClientSecret: KEYS.shopifyClientSecret ? '***' : '',
           nexusUrl: KEYS.nexusUrl || '',
-          nexusApiKey: KEYS.nexusApiKey || '',
+          nexusApiKey: KEYS.nexusApiKey ? '***' + KEYS.nexusApiKey.slice(-4) : '',
         },
       });
       return;
@@ -1252,6 +1247,7 @@ http.createServer(async (req, res) => {
         'ga4PropertyId',
         'shopifyStore', 'shopifyToken', 'shopifyClientId', 'shopifyClientSecret',
         'nexusUrl', 'nexusApiKey',
+        'gscSiteUrl', 'merchantId',
       ];
       // Protect googleRefreshToken from being overwritten by stale frontend values
       // when it was recently updated by the OAuth callback
@@ -1454,54 +1450,7 @@ http.createServer(async (req, res) => {
     // OFFLINE CONVERSION UPLOAD — Meta CAPI + Google Ads
     // ═══════════════════════════════════════════════════════════
 
-    // Helper: remove accents (ã→a, ç→c, etc.)
-    function removeAccents(str) {
-      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    }
-
-    // Helper: hash PII for Meta CAPI (SHA-256, normalized per Meta spec)
-    // Meta requires: lowercase, trim, remove punctuation but KEEP spaces for names/cities
-    function hashForMeta(value, type) {
-      if (!value || value === '(em branco)') return '';
-      let normalized = String(value).trim().toLowerCase();
-      normalized = removeAccents(normalized);
-      if (!normalized) return '';
-
-      if (type === 'phone') {
-        // Phone: digits only, with country code
-        normalized = normalized.replace(/\D/g, '');
-        if (!normalized || normalized.length < 8) return '';
-      } else if (type === 'email') {
-        // Email: lowercase, trim whitespace only
-        normalized = normalized.replace(/\s/g, '');
-        if (!normalized.includes('@')) return '';
-      } else if (type === 'name' || type === 'city') {
-        // Names/cities: lowercase, remove accents, keep only letters and spaces
-        normalized = normalized.replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ').trim();
-        if (!normalized) return '';
-      } else if (type === 'state') {
-        // State: lowercase 2-letter code
-        normalized = normalized.replace(/[^a-z]/g, '');
-        if (normalized.length > 2) normalized = normalized.substring(0, 2);
-      } else if (type === 'country') {
-        // Country: 2-letter lowercase
-        normalized = normalized.replace(/[^a-z]/g, '');
-      } else {
-        // Default (cpf/external_id): alphanumeric only
-        normalized = normalized.replace(/[^a-z0-9]/g, '');
-        if (!normalized) return '';
-      }
-
-      return crypto.createHash('sha256').update(normalized).digest('hex');
-    }
-
-    // Helper: split full name into first name + LAST name (surname only)
-    function splitName(fullName) {
-      if (!fullName) return { fn: '', ln: '' };
-      const parts = fullName.trim().split(/\s+/);
-      // fn = first name, ln = LAST word only (surname), not all middle names
-      return { fn: parts[0] || '', ln: parts[parts.length - 1] || '' };
-    }
+    // (removeAccents, hashForMeta, splitName are defined globally at line ~689)
 
     // ── Send offline conversions to Meta CAPI ──
     if (req.method === 'POST' && route === '/conversions/send-meta') {
@@ -2297,6 +2246,8 @@ http.createServer(async (req, res) => {
       const body = JSON.parse(await readBody(req));
       const { gaql } = body;
       if (!gaql) { json(res, 400, { error: 'gaql query required' }); return; }
+      // Validate GAQL: only allow SELECT queries (prevent mutations via this endpoint)
+      if (!gaql.trim().toUpperCase().startsWith('SELECT')) { json(res, 400, { error: 'Only SELECT queries allowed' }); return; }
       log('🔍', `Custom GAQL: ${gaql.substring(0, 80)}...`);
       const results = await withRetry(() => googleAdsQuery(gaql));
       json(res, 200, results);
