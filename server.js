@@ -1115,7 +1115,11 @@ function _nexusSyncConversions() {
               if (ev.contact_email) { var he = hashForMeta(ev.contact_email, 'email'); if (he) userData.em = [he]; }
               if (ev.contact_phone || ev.contact_wa_id) { var ph = String(ev.contact_phone || ev.contact_wa_id).replace(/\D/g, ''); if (ph.length === 10 || ph.length === 11) ph = '55' + ph; if (ph.length >= 12) { var hp = hashForMeta(ph, 'phone'); if (hp) userData.ph = [hp]; } }
               if (ev.contact_wa_id) { var hid = hashForMeta(ev.contact_wa_id); if (hid) userData.external_id = [hid]; }
-              var capiEvent = { event_name: 'Purchase', event_time: eventTime, action_source: 'business_messaging', user_data: userData, custom_data: { value: Number(ev.value || 0), currency: ev.currency || 'BRL', content_name: ev.product_name || '', order_id: ev.id, content_type: 'product' } };
+              // Add fbc/fbp from Nexus attribution if available
+              if (ev.attr_fbc) userData.fbc = ev.attr_fbc;
+              if (ev.attr_fbp) userData.fbp = ev.attr_fbp;
+              var actionSource = ev.attr_fbc ? 'website' : 'business_messaging';
+              var capiEvent = { event_name: 'Purchase', event_time: eventTime, action_source: actionSource, user_data: userData, custom_data: { value: Number(ev.value || 0), currency: ev.currency || 'BRL', content_name: ev.product_name || '', order_id: ev.id, content_type: 'product' } };
               try {
                 var capiUrl = 'https://graph.facebook.com/' + META_API_VERSION + '/' + KEYS.pixelId + '/events';
                 var capiResult = await httpsRequest(capiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ data: [capiEvent], access_token: KEYS.meta }), timeout: 30000 });
@@ -1504,10 +1508,14 @@ http.createServer(async (req, res) => {
         userData.country = [hashForMeta('br', 'country')];
         if (order.cpf && order.cpf !== '(em branco)') { const h = hashForMeta(order.cpf); if (h) userData.external_id = [h]; }
 
+        // Add fbc/fbp if available (critical for EMQ 8+)
+        if (order.fbc) userData.fbc = order.fbc;
+        if (order.fbp) userData.fbp = order.fbp;
+
         events.push({
           event_name: 'Purchase',
           event_time: eventTime,
-          action_source: 'business_messaging',
+          action_source: order.fbc ? 'website' : 'business_messaging',
           user_data: userData,
           custom_data: {
             value: Number(order.revenue || 0),
