@@ -892,7 +892,28 @@ async function runBrainAnalysis() {
 
   try {
     const data = await collectAllIntelligenceData();
-    const compressed = compressForClaude(data);
+    var compressed = compressForClaude(data);
+
+    // Add learning loop: past actions and their results
+    try {
+      var pastActions = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'intelligence-actions.json'), 'utf8'));
+      if (pastActions.length > 0) {
+        compressed += '\n\n=== AÇÕES EXECUTADAS ANTERIORMENTE (aprender com resultados) ===';
+        pastActions.slice(-10).forEach(function(a) {
+          compressed += '\n' + a.executedAt?.substring(0,10) + ' | ' + a.action + ' | ' + (a.success ? 'SUCESSO' : 'FALHOU: ' + (a.error || ''));
+        });
+      }
+    } catch {}
+
+    // Add autopilot alerts
+    try {
+      var autopilotAlerts = loadData('autopilot-alerts') || [];
+      var lastAlerts = autopilotAlerts.slice(-1)[0];
+      if (lastAlerts && lastAlerts.alerts && lastAlerts.alerts.length > 0) {
+        compressed += '\n\n=== ALERTAS AUTOPILOT (problemas detectados automaticamente) ===';
+        lastAlerts.alerts.forEach(function(a) { compressed += '\n⚠️ ' + a.message; });
+      }
+    } catch {}
 
     log('🧠', 'Sending ' + compressed.length + ' chars to Claude for analysis...');
 
@@ -1060,6 +1081,91 @@ function _startBrainAutoAnalysis() {
     }).catch(function() {});
   }, intervalMs);
   log('🧠', 'Brain auto-analysis started (every ' + _brainConfig.intervalHours + 'h)');
+}
+
+// ═══════════════════════════════════════════════════════════
+// AUTOPILOT — Rule-based campaign protection
+// Checks every 30 min for campaigns that need intervention
+// ═══════════════════════════════════════════════════════════
+var _autopilotInterval = null;
+var _autopilotRunning = false;
+
+var AUTOPILOT_RULES = [
+  {
+    name: 'Frequência > 5 → Pausar',
+    check: function(campaign) {
+      return parseFloat(campaign.frequency || 0) > 5;
+    },
+    action: 'ALERT',
+    message: function(c) { return 'Campanha "' + c.campaign_name + '" com frequência ' + parseFloat(c.frequency).toFixed(1) + ' (público saturado)'; }
+  },
+  {
+    name: 'Custo/msg > R$50 com > R$100 gasto',
+    check: function(campaign) {
+      var msgs = (campaign.actions || []).find(function(a) { return a.action_type === 'onsite_conversion.total_messaging_connection'; });
+      var msgCount = parseInt(msgs?.value || 0);
+      var spend = parseFloat(campaign.spend || 0);
+      return spend > 100 && msgCount > 0 && (spend / msgCount) > 50;
+    },
+    action: 'ALERT',
+    message: function(c) {
+      var msgs = (c.actions || []).find(function(a) { return a.action_type === 'onsite_conversion.total_messaging_connection'; });
+      var cost = parseFloat(c.spend) / parseInt(msgs?.value || 1);
+      return 'Campanha "' + c.campaign_name + '" com custo/msg R$' + cost.toFixed(0) + ' (desperdiçando budget)';
+    }
+  },
+  {
+    name: 'Gasto > R$200 com 0 mensagens',
+    check: function(campaign) {
+      var msgs = (campaign.actions || []).find(function(a) { return a.action_type === 'onsite_conversion.total_messaging_connection'; });
+      return parseFloat(campaign.spend || 0) > 200 && (!msgs || parseInt(msgs.value) === 0);
+    },
+    action: 'ALERT',
+    message: function(c) { return 'Campanha "' + c.campaign_name + '" gastou R$' + c.spend + ' sem gerar nenhuma mensagem WhatsApp'; }
+  }
+];
+
+async function runAutopilotCheck() {
+  if (_autopilotRunning || !KEYS.meta) return;
+  _autopilotRunning = true;
+
+  try {
+    var aid = (KEYS.adAccountId || '').replace('act_', '');
+    var data = await metaRead('/act_' + aid + '/insights?date_preset=last_7d&fields=campaign_name,campaign_id,spend,impressions,reach,frequency,actions&level=campaign&limit=20&sort=spend_descending');
+    var campaigns = data?.data || (Array.isArray(data) ? data : []);
+
+    var alerts = [];
+    for (var c of campaigns) {
+      for (var rule of AUTOPILOT_RULES) {
+        if (rule.check(c)) {
+          alerts.push({ rule: rule.name, campaign: c.campaign_name, campaignId: c.campaign_id, message: rule.message(c), action: rule.action });
+        }
+      }
+    }
+
+    if (alerts.length > 0) {
+      log('🤖', 'Autopilot: ' + alerts.length + ' alerts triggered');
+      alerts.forEach(function(a) { log('⚠️', 'AUTOPILOT: ' + a.message); });
+
+      // Save alerts
+      var alertHistory = loadData('autopilot-alerts') || [];
+      alertHistory.push({ timestamp: new Date().toISOString(), alerts: alerts });
+      if (alertHistory.length > 50) alertHistory.splice(0, alertHistory.length - 50);
+      saveData('autopilot-alerts', alertHistory);
+    }
+  } catch (e) {
+    log('❌', 'Autopilot error: ' + e.message);
+  } finally {
+    _autopilotRunning = false;
+  }
+}
+
+function _startAutopilot() {
+  if (_autopilotInterval) clearInterval(_autopilotInterval);
+  _autopilotInterval = setInterval(function() { runAutopilotCheck().catch(function() {}); }, 30 * 60 * 1000); // Every 30 min
+  log('🤖', 'Autopilot started (checks every 30 min)');
+  // Run first check after 2 min (let server warm up)
+  setTimeout(function() { runAutopilotCheck().catch(function() {}); }, 2 * 60 * 1000);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -2905,6 +3011,20 @@ http.createServer(async (req, res) => {
       return;
     }
 
+    // ── Autopilot alerts ──
+    if (req.method === 'GET' && route === '/autopilot/alerts') {
+      const alerts = loadData('autopilot-alerts') || [];
+      json(res, 200, { alerts: alerts.slice(-10) });
+      return;
+    }
+
+    if (req.method === 'POST' && route === '/autopilot/check') {
+      await runAutopilotCheck();
+      const alerts = loadData('autopilot-alerts') || [];
+      json(res, 200, { lastCheck: alerts[alerts.length - 1] || null });
+      return;
+    }
+
     // ═══════════════════════════════════════════════════════════
     // NEXUS INTEGRATION — WhatsApp AI Platform
     // Separate SaaS product that connects via API Key.
@@ -3040,5 +3160,10 @@ http.createServer(async (req, res) => {
   // Start Brain auto-analysis if configured
   if (_brainConfig && _brainConfig.enabled) {
     _startBrainAutoAnalysis();
+  }
+
+  // Start Autopilot (campaign protection)
+  if (KEYS.meta) {
+    _startAutopilot();
   }
 });
