@@ -712,6 +712,362 @@ function splitName(fullName) {
 }
 
 // ═══════════════════════════════════════════════════════════
+// INTELLIGENCE BRAIN — Cross-platform analysis & execution
+// ═══════════════════════════════════════════════════════════
+var _brainCache = null;
+var _brainCacheExpiry = 0;
+var _brainInterval = null;
+var _brainAnalyzing = false;
+var _brainConfig = null;
+try { _brainConfig = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'brain-config.json'), 'utf8')); } catch { _brainConfig = { enabled: false, intervalHours: 6, autoExecuteRisk: 'low' }; }
+
+async function collectAllIntelligenceData() {
+  // Check cache (10 min TTL)
+  if (_brainCache && Date.now() < _brainCacheExpiry) return _brainCache;
+
+  log('🧠', 'Collecting intelligence data from all sources...');
+  const results = {};
+
+  // Helper: internal HTTP call to self
+  function selfCall(route, body) {
+    return new Promise((resolve) => {
+      const req = http.request({ hostname: 'localhost', port: PORT, path: route, method: body ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json' }, timeout: 25000 }, (res) => {
+        let data = ''; res.on('data', c => data += c);
+        res.on('end', () => { try { resolve(JSON.parse(data)); } catch { resolve(null); } });
+      });
+      req.on('error', () => resolve(null));
+      if (body) req.write(JSON.stringify(body));
+      req.end();
+    });
+  }
+
+  // Collect in parallel
+  const [meta, google, ga4Channels, ga4Funnel, ga4Devices, ga4Landing, gscQueries, gscPages, merchant, shopifyOrders, shopifyAbandoned] = await Promise.allSettled([
+    selfCall('/meta/read', { path: '/act_' + (KEYS.adAccountId || '').replace('act_', '') + '/insights?date_preset=last_30d&fields=campaign_name,campaign_id,objective,spend,impressions,reach,clicks,ctr,actions,frequency&level=campaign&limit=30&sort=spend_descending' }),
+    selfCall('/google/campaigns', { startDate: new Date(Date.now() - 30*86400000).toISOString().substring(0,10), endDate: new Date().toISOString().substring(0,10) }),
+    selfCall('/ga4/report', { reportBody: { dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'sessionDefaultChannelGroup' }], metrics: [{ name: 'sessions' }, { name: 'totalUsers' }, { name: 'conversions' }, { name: 'bounceRate' }] } }),
+    selfCall('/ga4/report', { reportBody: { dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }], dimensionFilter: { filter: { fieldName: 'eventName', inListFilter: { values: ['page_view','view_item','add_to_cart','begin_checkout','purchase','session_start'] } } } } }),
+    selfCall('/ga4/report', { reportBody: { dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'deviceCategory' }], metrics: [{ name: 'sessions' }, { name: 'bounceRate' }] } }),
+    selfCall('/ga4/report', { reportBody: { dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }], dimensions: [{ name: 'landingPagePlusQueryString' }], metrics: [{ name: 'sessions' }, { name: 'conversions' }], orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: '20' } }),
+    KEYS.googleRefreshToken ? selfCall('/gsc/query', { siteUrl: 'https://www.tothmoveis.com.br/', dimensions: ['query'], rowLimit: 200 }) : Promise.resolve(null),
+    KEYS.googleRefreshToken ? selfCall('/gsc/query', { siteUrl: 'https://www.tothmoveis.com.br/', dimensions: ['page'], rowLimit: 100 }) : Promise.resolve(null),
+    selfCall('/merchant/products', { merchantId: '243128782' }),
+    selfCall('/shopify/orders', {}),
+    selfCall('/shopify/abandoned', {}),
+  ]);
+
+  // Extract results (handle failures)
+  results.meta = meta.status === 'fulfilled' ? meta.value : null;
+  results.google = google.status === 'fulfilled' ? google.value : null;
+  results.ga4Channels = ga4Channels.status === 'fulfilled' ? ga4Channels.value : null;
+  results.ga4Funnel = ga4Funnel.status === 'fulfilled' ? ga4Funnel.value : null;
+  results.ga4Devices = ga4Devices.status === 'fulfilled' ? ga4Devices.value : null;
+  results.ga4Landing = ga4Landing.status === 'fulfilled' ? ga4Landing.value : null;
+  results.gscQueries = gscQueries.status === 'fulfilled' ? gscQueries.value : null;
+  results.gscPages = gscPages.status === 'fulfilled' ? gscPages.value : null;
+  results.merchant = merchant.status === 'fulfilled' ? merchant.value : null;
+  results.shopifyOrders = shopifyOrders.status === 'fulfilled' ? shopifyOrders.value : null;
+  results.shopifyAbandoned = shopifyAbandoned.status === 'fulfilled' ? shopifyAbandoned.value : null;
+
+  // Sales data (local)
+  try {
+    const conv = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'conversions.json'), 'utf8'));
+    const orders = conv.orders || [];
+    // Aggregate by product
+    const byProduct = {};
+    orders.forEach(o => { const p = o.product || 'N/A'; if (!byProduct[p]) byProduct[p] = { count: 0, revenue: 0 }; byProduct[p].count++; byProduct[p].revenue += o.revenue || 0; });
+    // Aggregate by state
+    const byState = {};
+    orders.forEach(o => { const s = o.state || 'N/A'; if (!byState[s]) byState[s] = { count: 0, revenue: 0 }; byState[s].count++; byState[s].revenue += o.revenue || 0; });
+    // Aggregate by month
+    const byMonth = {};
+    orders.forEach(o => { if (!o.date) return; const m = o.date.substring(0, 7); if (!byMonth[m]) byMonth[m] = { count: 0, revenue: 0 }; byMonth[m].count++; byMonth[m].revenue += o.revenue || 0; });
+    // Customers
+    const byCpf = {};
+    orders.forEach(o => { const c = o.cpf || ''; if (!c) return; if (!byCpf[c]) byCpf[c] = { count: 0, revenue: 0 }; byCpf[c].count++; byCpf[c].revenue += o.revenue || 0; });
+    const repeatBuyers = Object.values(byCpf).filter(c => c.count > 1).length;
+    const totalCustomers = Object.keys(byCpf).length;
+
+    results.sales = {
+      totalOrders: orders.length,
+      totalRevenue: orders.reduce((s, o) => s + (o.revenue || 0), 0),
+      avgTicket: orders.length ? orders.reduce((s, o) => s + (o.revenue || 0), 0) / orders.length : 0,
+      topProducts: Object.entries(byProduct).sort((a, b) => b[1].revenue - a[1].revenue).slice(0, 15).map(([p, d]) => ({ product: p, orders: d.count, revenue: d.revenue })),
+      topStates: Object.entries(byState).sort((a, b) => b[1].revenue - a[1].revenue).slice(0, 10).map(([s, d]) => ({ state: s, orders: d.count, revenue: d.revenue })),
+      monthlyTrend: Object.entries(byMonth).sort().map(([m, d]) => ({ month: m, orders: d.count, revenue: d.revenue })),
+      totalCustomers,
+      repeatBuyers,
+      repeatRate: totalCustomers ? (repeatBuyers / totalCustomers * 100).toFixed(1) + '%' : '0%',
+    };
+  } catch { results.sales = null; }
+
+  // ROAS history
+  try { results.roasHistory = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'roas-history.json'), 'utf8')); } catch { results.roasHistory = null; }
+
+  // Strategy
+  try { results.strategy = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'estrategia-meta.json'), 'utf8')); } catch { results.strategy = null; }
+
+  results.collectedAt = new Date().toISOString();
+  _brainCache = results;
+  _brainCacheExpiry = Date.now() + 10 * 60 * 1000;
+  log('🧠', 'Intelligence data collected from ' + Object.keys(results).filter(k => results[k] !== null && k !== 'collectedAt').length + ' sources');
+  return results;
+}
+
+function compressForClaude(data) {
+  const sections = [];
+
+  sections.push('=== VENDAS REAIS (CRM) ===');
+  if (data.sales) {
+    sections.push('Total: ' + data.sales.totalOrders + ' pedidos | R$' + data.sales.totalRevenue.toFixed(0) + ' | Ticket médio: R$' + data.sales.avgTicket.toFixed(0));
+    sections.push('Clientes: ' + data.sales.totalCustomers + ' únicos | ' + data.sales.repeatBuyers + ' recorrentes (' + data.sales.repeatRate + ')');
+    sections.push('Top produtos: ' + data.sales.topProducts.slice(0, 10).map(p => p.product.substring(0, 30) + ' R$' + p.revenue.toFixed(0) + ' (' + p.orders + 'x)').join(' | '));
+    sections.push('Top estados: ' + data.sales.topStates.slice(0, 8).map(s => s.state + ':R$' + s.revenue.toFixed(0)).join(' | '));
+    sections.push('Tendência mensal: ' + data.sales.monthlyTrend.slice(-6).map(m => m.month + ':' + m.orders + '/R$' + m.revenue.toFixed(0)).join(' | '));
+  }
+
+  sections.push('\n=== META ADS (30 dias) ===');
+  if (data.meta && data.meta.data) {
+    data.meta.data.forEach(c => {
+      const msgs = (c.actions || []).find(a => a.action_type === 'onsite_conversion.total_messaging_connection');
+      const lpv = (c.actions || []).find(a => a.action_type === 'landing_page_view');
+      const atc = (c.actions || []).find(a => a.action_type === 'add_to_cart');
+      sections.push(c.campaign_name + ' | spend:R$' + c.spend + ' | impr:' + c.impressions + ' | reach:' + c.reach + ' | freq:' + parseFloat(c.frequency || 0).toFixed(1) + ' | msgs:' + (msgs?.value || 0) + ' | lpv:' + (lpv?.value || 0) + ' | atc:' + (atc?.value || 0));
+    });
+  }
+
+  sections.push('\n=== GOOGLE ADS (30 dias) ===');
+  if (data.google && Array.isArray(data.google)) {
+    data.google.forEach(r => {
+      const c = r.campaign || {}; const m = r.metrics || {};
+      sections.push(c.name + ' [' + c.status + '] | type:' + c.advertisingChannelType + ' | spend:R$' + (parseInt(m.costMicros || 0) / 1000000).toFixed(0) + ' | clicks:' + (m.clicks || 0) + ' | impr:' + (m.impressions || 0) + ' | searchShare:' + (m.searchImpressionShare ? (m.searchImpressionShare * 100).toFixed(0) + '%' : 'N/A'));
+    });
+  }
+
+  sections.push('\n=== GA4 CANAIS ===');
+  if (data.ga4Channels && data.ga4Channels.rows) {
+    data.ga4Channels.rows.forEach(r => sections.push(r.dimensionValues[0].value + ' | sess:' + r.metricValues[0].value + ' | users:' + r.metricValues[1].value + ' | conv:' + r.metricValues[2].value + ' | bounce:' + (+r.metricValues[3].value * 100).toFixed(1) + '%'));
+  }
+
+  sections.push('\n=== GA4 FUNIL ===');
+  if (data.ga4Funnel && data.ga4Funnel.rows) {
+    data.ga4Funnel.rows.sort((a, b) => +b.metricValues[0].value - +a.metricValues[0].value).forEach(r => sections.push(r.dimensionValues[0].value + ' | count:' + r.metricValues[0].value + ' | users:' + r.metricValues[1].value));
+  }
+
+  sections.push('\n=== GSC TOP QUERIES ===');
+  if (data.gscQueries && data.gscQueries.rows) {
+    data.gscQueries.rows.slice(0, 30).forEach(r => sections.push(r.keys[0] + ' | clicks:' + r.clicks + ' | impr:' + r.impressions + ' | ctr:' + (r.ctr * 100).toFixed(1) + '% | pos:' + r.position.toFixed(1)));
+  }
+
+  sections.push('\n=== MERCHANT CENTER ===');
+  if (data.merchant && data.merchant.resources) {
+    const prods = data.merchant.resources;
+    let approved = 0, disapproved = 0;
+    const issues = {};
+    prods.forEach(p => {
+      const itemIssues = p.itemLevelIssues || [];
+      if (itemIssues.some(i => i.servability === 'disapproved')) { disapproved++; itemIssues.filter(i => i.servability === 'disapproved').forEach(i => { issues[i.description] = (issues[i.description] || 0) + 1; }); }
+      else approved++;
+    });
+    sections.push('Total: ' + prods.length + ' | Approved: ' + approved + ' | Disapproved: ' + disapproved);
+    Object.entries(issues).sort((a, b) => b[1] - a[1]).forEach(([desc, count]) => sections.push('  Issue [' + count + 'x]: ' + desc));
+  }
+
+  sections.push('\n=== SHOPIFY ===');
+  if (data.shopifyOrders && Array.isArray(data.shopifyOrders)) {
+    sections.push('Orders (90d): ' + data.shopifyOrders.length);
+  }
+  if (data.shopifyAbandoned && Array.isArray(data.shopifyAbandoned)) {
+    let abandonedValue = 0;
+    data.shopifyAbandoned.forEach(c => { abandonedValue += parseFloat(c.totalPriceSet?.shopMoney?.amount || 0); });
+    sections.push('Abandoned checkouts: ' + data.shopifyAbandoned.length + ' | Value: R$' + abandonedValue.toFixed(0));
+  }
+
+  if (data.roasHistory && data.roasHistory.months) {
+    sections.push('\n=== ROAS HISTORICO ===');
+    data.roasHistory.months.slice(-6).forEach(m => sections.push(m.month + ' | vendas:' + m.orders + ' | receita:R$' + m.revenue.toFixed(0) + ' | meta:R$' + m.metaSpend.toFixed(0) + ' | google:R$' + m.googleSpend.toFixed(0) + ' | ROAS:' + m.roas.toFixed(1) + 'x'));
+  }
+
+  return sections.join('\n');
+}
+
+async function runBrainAnalysis() {
+  if (_brainAnalyzing) return { error: 'Analysis already in progress' };
+  _brainAnalyzing = true;
+
+  try {
+    const data = await collectAllIntelligenceData();
+    const compressed = compressForClaude(data);
+
+    log('🧠', 'Sending ' + compressed.length + ' chars to Claude for analysis...');
+
+    const systemPrompt = `You are the Intelligence Brain of Toth Intelligence, a marketing analytics platform for Toth Móveis — a premium furniture store in Brazil.
+
+Your job: analyze ALL data from 8 marketing platforms, cross-reference them, and generate ACTIONABLE execution plans.
+
+## Business Context
+- Currency: BRL (Brazilian Real)
+- Business: Premium solid wood furniture (average ticket ~R$5,942)
+- Sales funnel: Ad → Site → WhatsApp → Conversation → Purchase
+- ALL sales happen via WhatsApp (zero online checkout)
+- Monthly revenue: ~R$142k (March 2026)
+- Total ad budget: R$300/day (Meta + Google)
+- Google PMax has proven ROAS 25x
+- Meta campaigns: some work (R$6/msg), others waste money (R$154/msg)
+
+## Analysis Framework
+Cross ALL data sources and find:
+
+1. PRODUCT: Which products have demand (GSC/sales) but no ad investment? Which are advertised but don't sell?
+2. AUDIENCE: Where are real buyers (by state/city)? Is the ad budget allocated there? Is the audience quality degrading?
+3. TIMING: When do sales peak (day of week, week of month)? Are ads running at those times?
+4. FUNNEL: Where does the funnel break? View→Cart rate? Cart→WhatsApp rate? What's causing drop-offs?
+5. OPPORTUNITY: High-impression GSC queries with no ads? Products in Merchant Center with issues? Abandoned carts to recover?
+
+## Output Format
+Return ONLY valid JSON (no markdown, no backticks, no explanation outside JSON):
+{
+  "summary": "2-3 sentence executive summary in Portuguese",
+  "healthScore": 0-100,
+  "insights": [
+    {
+      "dimension": "product|audience|timing|funnel|opportunity",
+      "severity": "critical|warning|opportunity",
+      "title": "Short title in Portuguese",
+      "detail": "Detailed explanation with specific numbers in Portuguese"
+    }
+  ],
+  "actions": [
+    {
+      "priority": 1-5,
+      "title": "Action title in Portuguese",
+      "description": "What to do and why in Portuguese",
+      "estimatedImpact": "Expected result in R$",
+      "type": "meta_pause|meta_budget|google_budget|capi_send|manual",
+      "executable": true or false,
+      "risk": "low|medium|high",
+      "params": {}
+    }
+  ],
+  "budgetReallocation": {
+    "currentMeta": 0,
+    "currentGoogle": 0,
+    "recommendedMeta": 0,
+    "recommendedGoogle": 0,
+    "reasoning": "Why in Portuguese"
+  }
+}`;
+
+    const aiBody = JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4000,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: compressed }]
+    });
+
+    const aiResult = await httpsRequest('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': KEYS.anthropic, 'anthropic-version': '2023-06-01' },
+      body: aiBody,
+      timeout: 60000,
+    });
+
+    if (aiResult.status >= 400) {
+      throw new Error('Claude API error: ' + (aiResult.data?.error?.message || aiResult.status));
+    }
+
+    const text = aiResult.data?.content?.[0]?.text || '';
+    let analysis;
+    try { analysis = JSON.parse(text); }
+    catch { analysis = { summary: text, healthScore: 50, insights: [], actions: [], budgetReallocation: {} }; }
+
+    analysis.analyzedAt = new Date().toISOString();
+    analysis.dataTokens = compressed.length;
+
+    // Save to history
+    const historyPath = path.join(DATA_DIR, 'intelligence-history.json');
+    let history = [];
+    try { history = JSON.parse(fs.readFileSync(historyPath, 'utf8')); } catch {}
+    history.push(analysis);
+    if (history.length > 20) history.splice(0, history.length - 20);
+    fs.writeFileSync(historyPath, JSON.stringify(history, null, 2));
+
+    log('🧠', 'Brain analysis complete: score=' + analysis.healthScore + ' insights=' + (analysis.insights || []).length + ' actions=' + (analysis.actions || []).length);
+    return analysis;
+  } catch (e) {
+    log('❌', 'Brain analysis error: ' + e.message);
+    return { error: e.message };
+  } finally {
+    _brainAnalyzing = false;
+  }
+}
+
+async function executeBrainAction(action) {
+  log('🧠', 'Executing action: ' + action.title);
+  const logEntry = { action: action.title, type: action.type, executedAt: new Date().toISOString(), success: false };
+
+  try {
+    let result;
+    if (action.type === 'meta_pause' && action.params?.campaignId) {
+      result = await new Promise((resolve, reject) => {
+        const body = JSON.stringify({ path: '/' + action.params.campaignId, params: { status: 'PAUSED' } });
+        const req = http.request({ hostname: 'localhost', port: PORT, path: '/meta/write', method: 'POST', headers: { 'Content-Type': 'application/json' } }, (res) => {
+          let d = ''; res.on('data', c => d += c); res.on('end', () => { try { resolve(JSON.parse(d)); } catch { resolve({ raw: d }); } });
+        });
+        req.on('error', reject); req.write(body); req.end();
+      });
+    } else if (action.type === 'meta_budget' && action.params?.campaignId && action.params?.dailyBudget) {
+      result = await new Promise((resolve, reject) => {
+        const body = JSON.stringify({ path: '/' + action.params.campaignId, params: { daily_budget: action.params.dailyBudget } });
+        const req = http.request({ hostname: 'localhost', port: PORT, path: '/meta/write', method: 'POST', headers: { 'Content-Type': 'application/json' } }, (res) => {
+          let d = ''; res.on('data', c => d += c); res.on('end', () => { try { resolve(JSON.parse(d)); } catch { resolve({ raw: d }); } });
+        });
+        req.on('error', reject); req.write(body); req.end();
+      });
+    } else if (action.type === 'capi_send') {
+      result = { message: 'CAPI send requires manual trigger with specific order data' };
+    } else {
+      result = { message: 'Action type ' + action.type + ' requires manual execution' };
+    }
+
+    logEntry.success = !result?.error;
+    logEntry.result = result;
+    log('🧠', 'Action executed: ' + (logEntry.success ? 'SUCCESS' : 'FAILED'));
+  } catch (e) {
+    logEntry.error = e.message;
+    log('❌', 'Action execution error: ' + e.message);
+  }
+
+  // Save action log
+  const logPath = path.join(DATA_DIR, 'intelligence-actions.json');
+  let actions = [];
+  try { actions = JSON.parse(fs.readFileSync(logPath, 'utf8')); } catch {}
+  actions.push(logEntry);
+  if (actions.length > 100) actions.splice(0, actions.length - 100);
+  fs.writeFileSync(logPath, JSON.stringify(actions, null, 2));
+
+  return logEntry;
+}
+
+function _startBrainAutoAnalysis() {
+  if (_brainInterval) clearInterval(_brainInterval);
+  if (!_brainConfig || !_brainConfig.enabled) return;
+  var intervalMs = (_brainConfig.intervalHours || 6) * 60 * 60 * 1000;
+  _brainInterval = setInterval(function() {
+    runBrainAnalysis().then(function(analysis) {
+      if (analysis && !analysis.error && _brainConfig.autoExecuteRisk !== 'none') {
+        (analysis.actions || []).forEach(function(action) {
+          if (action.executable && action.risk === 'low') {
+            executeBrainAction(action).catch(function() {});
+          }
+        });
+      }
+    }).catch(function() {});
+  }, intervalMs);
+  log('🧠', 'Brain auto-analysis started (every ' + _brainConfig.intervalHours + 'h)');
+}
+
+// ═══════════════════════════════════════════════════════════
 // NEXUS AUTO-SYNC ENGINE (must be before http.createServer)
 // ═══════════════════════════════════════════════════════════
 var _nexusSyncInterval = null;
@@ -2559,6 +2915,38 @@ http.createServer(async (req, res) => {
     }
 
     // ═══════════════════════════════════════════════════════════
+    // INTELLIGENCE BRAIN ROUTES
+    // ═══════════════════════════════════════════════════════════
+
+    if (req.method === 'POST' && route === '/intelligence/analyze') {
+      const analysis = await runBrainAnalysis();
+      json(res, 200, analysis);
+      return;
+    }
+
+    if (req.method === 'POST' && route === '/intelligence/execute') {
+      const { action } = JSON.parse(await readBody(req));
+      if (!action) { json(res, 400, { error: { message: 'action required' } }); return; }
+      const result = await executeBrainAction(action);
+      json(res, 200, result);
+      return;
+    }
+
+    if (req.method === 'GET' && route === '/intelligence/history') {
+      try {
+        const history = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'intelligence-history.json'), 'utf8'));
+        json(res, 200, { history: history.slice(-10) });
+      } catch { json(res, 200, { history: [] }); }
+      return;
+    }
+
+    if (req.method === 'GET' && route === '/intelligence/data') {
+      const data = await collectAllIntelligenceData();
+      json(res, 200, data);
+      return;
+    }
+
+    // ═══════════════════════════════════════════════════════════
     // NEXUS INTEGRATION — WhatsApp AI Platform
     // Separate SaaS product that connects via API Key.
     // Intelligence polls Nexus for conversions → sends to CAPI.
@@ -2688,5 +3076,10 @@ http.createServer(async (req, res) => {
   // Start Nexus auto-sync if connected
   if (KEYS.nexusUrl && KEYS.nexusApiKey) {
     _startNexusAutoSync();
+  }
+
+  // Start Brain auto-analysis if configured
+  if (_brainConfig && _brainConfig.enabled) {
+    _startBrainAutoAnalysis();
   }
 });
