@@ -872,6 +872,10 @@ async function doConnect() {
     shopifyClientId: document.getElementById('keyShopifyClientId').value.trim(),
     shopifyClientSecret: document.getElementById('keyShopifySecret').value.trim(),
   };
+  // Don't send masked values (***) back to server
+  for (const k of Object.keys(keys)) {
+    if (keys[k] && keys[k].startsWith('***')) delete keys[k];
+  }
   G.keys = keys;
 
   nav('loading');
@@ -1048,6 +1052,10 @@ async function saveKeysOnly() {
     nexusUrl: document.getElementById('keyNexusUrl').value.trim(),
     nexusApiKey: document.getElementById('keyNexusApiKey').value.trim(),
   };
+  // Don't send masked values (***) back to server — they corrupt the real keys
+  for (const k of Object.keys(keys)) {
+    if (keys[k] && keys[k].startsWith('***')) delete keys[k];
+  }
   try {
     await api('/config', keys);
     document.getElementById('connectStatus').textContent = 'Chaves salvas!';
