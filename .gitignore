@@ -5,3 +5,4 @@ node_modules/
 server.log
 nul
 *.xlsx
+keys-backup*

@@ -1364,6 +1364,15 @@ http.createServer(async (req, res) => {
       const oauthRecentlyUpdated = GOOGLE_REFRESH_TOKEN_UPDATED_AT && (Date.now() - GOOGLE_REFRESH_TOKEN_UPDATED_AT < 5 * 60 * 1000);
       for (const field of keyFields) {
         if (body[field] !== undefined) {
+          // NEVER accept masked values (***) — they corrupt real keys
+          if (typeof body[field] === 'string' && body[field].startsWith('***')) {
+            log('🛡️', 'BLOCKED masked value for ' + field + ' — keeping original');
+            continue;
+          }
+          // Skip empty values if we already have a real value
+          if (!body[field] && KEYS[field] && KEYS[field].length > 5) {
+            continue;
+          }
           // Skip if OAuth recently set a new refresh token and frontend sends a different (stale) value
           if (field === 'googleRefreshToken' && oauthRecentlyUpdated && body[field] !== KEYS.googleRefreshToken) {
             log('🔑', 'Skipping stale googleRefreshToken from frontend (OAuth recently updated)');
